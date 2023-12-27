@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import './App.css'
 import SignIn  from './components/SignIn'
 import Dashboard  from './components/Dashboard'
@@ -6,17 +6,25 @@ import Cookies from 'js-cookie';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    // Function to handle successful login
-    const handleLogin = () => {
-      setIsLoggedIn(true);
-    };
   
-    const handleLogout = () => {
-      setIsLoggedIn(false);
-      Cookies.remove("Authorization")
-    };
+  useEffect(() => {
+    const checkedLoggedIn = Cookies.get("token")
+    if (checkedLoggedIn !== undefined){
+      setIsLoggedIn(true)
+      console.log("logged in")
+    }
+  })
+  
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    Cookies.remove("token")
+  };
+  // checkLoggedIn();
+  
   return (
     <>
       {isLoggedIn ? (
