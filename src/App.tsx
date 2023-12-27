@@ -11,7 +11,6 @@ function App() {
     const checkedLoggedIn = Cookies.get("token")
     if (checkedLoggedIn !== undefined){
       setIsLoggedIn(true)
-      console.log("logged in")
     }
   })
   
