@@ -7,6 +7,6 @@ COPY public ./public
 
 RUN bun install && bun run build
 
-RUN chown -R app /app && chmod -R 700 /app
+# RUN chown -R app /app && chmod -R 700 /app
 # USER app ##disable for dev
 CMD ["bun","run","preview"]

@@ -1,0 +1,59 @@
+---
+# Source: auth/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authui
+  namespace: {{ $.Release.Namespace }}
+  labels: {}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authui
+  template:
+    metadata:
+      labels:
+        app: authui
+    spec:
+      securityContext: {}
+      imagePullSecrets:
+        - name: {{ .Values.regCredName }} 
+      containers:
+        - name: authui
+          securityContext: null
+          image: {{ .Values.imageName }}
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 4173
+              protocol: TCP
+          resources:
+            limits:
+              memory: 500Mi
+            requests:
+              memory: 500Mi
+          command:
+            - bun
+            - run  
+            - preview
+
+
+---
+# Source: auth/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: authui
+  namespace: {{ $.Release.Namespace }}
+  labels: {}
+spec:
+  type: NodePort
+  ports:
+    - port: 4173
+      targetPort: http
+      protocol: TCP
+      name: http
+      nodePort: 30101
+  selector:
+    app: authui
