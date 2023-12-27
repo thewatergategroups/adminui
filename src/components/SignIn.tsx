@@ -34,7 +34,7 @@ const SignIn:React.FC<SignInProps> = ({ onLogin }) =>{
     const apiUrl = 'http://10.252.1.0:30100/public/login';
     axios.post(apiUrl, postData)
       .then(response => {
-        Cookies.set('Authorization', response.data.token);
+        Cookies.set('token', response.data.token);
         onLogin()
       })
       .catch(error => {
