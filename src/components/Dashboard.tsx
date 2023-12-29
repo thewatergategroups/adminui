@@ -1,22 +1,46 @@
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import React from 'react';
+import { Grid, Card, CardContent, Typography, Button } from '@mui/material';
 
+const cards = [
+  { id: 1, title: 'Argo CD', content: 'Provisioning Applications', externalLink: 'http://10.252.1.0:30000' },
+  { id: 2, title: 'Wireguard', content: 'VPN Service', externalLink: 'http://10.252.1.0:31502' },
+  { id: 3, title: 'PgAdmin', content: 'Database Management', externalLink: 'http://10.252.1.0:31001' },
+  { id: 4, title: 'Auth Api', content: 'Swagger Docs for the Authentication API', externalLink: 'http://10.252.1.0:30100/docs' },
+  { id: 5, title: 'Llama Api', content: 'Trading Bot Swagger Docs', externalLink: 'http://10.252.1.0:30200/docs' },
+];
 interface DashboardProps {
   onLogout: () => void; 
 }
 
+
 const Dashboard: React.FC<DashboardProps> = ({ onLogout }) =>{
   return (
-    <div>
-      <Typography variant="h4" gutterBottom color="black">
-        Welcome
-      </Typography>
-      <Button variant="contained" color="primary" onClick={onLogout}>
+    <Grid container direction="column" spacing={2} style={{ height: '100vh' }}>
+    {/* Header Section */}
+    <Grid item container justifyContent="space-between" alignItems="center" sx={{ padding: 2 }}>
+      <Typography variant="h4" color="black">Welcome</Typography>
+      <Button onClick={onLogout} variant="contained" color="primary">
         Logout
       </Button>
-    </div>
-  );
+    </Grid>
+     {/* Card Grid Section */}
+     <Grid item container spacing={2} sx={{ flexGrow: 1, overflowY: 'auto', padding: 2 }}>
+        {cards.map((card) => (
+          <Grid item key={card.id} xs={12} sm={6} md={4}>
+            <a href={card.externalLink} style={{ textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
+              <Card sx={{ minHeight: '150px', maxHeight: '150px' }}>
+                <CardContent>
+                  <Typography variant="h6">{card.title}</Typography>
+                  <Typography>{card.content}</Typography>
+                </CardContent>
+              </Card>
+            </a>
+          </Grid>
+        ))}
+      </Grid>
+    </Grid>
+  )
+  
 };
 
 export default Dashboard

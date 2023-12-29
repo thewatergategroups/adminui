@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,6 +14,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 
 const defaultTheme = createTheme();
 
@@ -22,6 +25,10 @@ interface SignInProps {
 }
 
 const SignIn:React.FC<SignInProps> = ({ onLogin }) =>{
+  const [loginFailed, setLoginFailed] = useState(false);
+  
+
+  
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -39,12 +46,29 @@ const SignIn:React.FC<SignInProps> = ({ onLogin }) =>{
       })
       .catch(error => {
         console.error('Error:', error.response ? error.response.data : error.message);
+        setLoginFailed(true)
+        
       });
 
   };
 
+  const handleClose = () => {
+    setLoginFailed(false);
+  };
+
   return (
+    
     <ThemeProvider theme={defaultTheme}>
+      <Snackbar
+      open={loginFailed}
+      autoHideDuration={6000} // Adjust the duration as needed
+      onClose={handleClose}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+      <Alert onClose={handleClose} severity="error">
+        Login Failed. Please try again.
+      </Alert>
+      </Snackbar>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
