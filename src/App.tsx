@@ -34,6 +34,7 @@ function App() {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    Cookies.remove("token");
   };
   
   return (
