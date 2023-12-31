@@ -35,20 +35,17 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) =>{
 
 
   return (
-    <Grid container direction="column" spacing={2} style={{ height: '100vh' }}>
-
-
-
+    <Grid container direction="column" spacing={2} style={{ height: '100vh', maxWidth:'100%' }}>
     {/* Header Section */}
-    <Grid item container justifyContent="space-between" alignItems="center" sx={{ padding: 2 }}>
+      <Grid item container justifyContent="space-between" alignItems="center" sx={{ padding: 2 }}>
 
-      <Typography variant="h4" color="black">Welcome</Typography>
-      <UserIcon/>
-      <Button onClick={onLogout} variant="contained" color="primary">
-        Logout
-      </Button>
-    </Grid>
-    <AppCards/>
+        <Typography variant="h4" color="black">Welcome</Typography>
+        <UserIcon/>
+        <Button onClick={onLogout} variant="contained" color="primary">
+          Logout
+        </Button>
+        <AppCards/>
+      </Grid>
     </Grid>
   )
   
