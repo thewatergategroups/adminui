@@ -1,12 +1,12 @@
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import React from 'react';
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import React from "react";
 
 interface DashboardProps {
-  onLogout: () => void; 
+  onLogout: () => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ onLogout }) =>{
+const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   return (
     <div>
       <Typography variant="h4" gutterBottom color="black">
@@ -19,4 +19,4 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) =>{
   );
 };
 
-export default Dashboard
+export default Dashboard;

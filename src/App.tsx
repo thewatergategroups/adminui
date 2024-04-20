@@ -1,21 +1,21 @@
-import { useState } from 'react';
-import './App.css'
-import SignIn  from './components/SignIn'
-import Dashboard  from './components/Dashboard'
-import Cookies from 'js-cookie';
+import { useState } from "react";
+import "./App.css";
+import Dashboard from "./components/Dashboard";
+import SignIn from "./components/SignIn";
+import { logout } from "./logic/api";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-    // Function to handle successful login
-    const handleLogin = () => {
-      setIsLoggedIn(true);
-    };
-  
-    const handleLogout = () => {
-      setIsLoggedIn(false);
-      Cookies.remove("Authorization")
-    };
+  // Function to handle successful login
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    logout();
+  };
 
   return (
     <>
@@ -27,7 +27,7 @@ function App() {
         <SignIn onLogin={handleLogin} />
       )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
