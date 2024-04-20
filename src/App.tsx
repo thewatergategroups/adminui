@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
+import ErrorPage from "./ErrorPage";
 import Dashboard from "./components/Dashboard";
 import SignIn from "./components/SignIn";
 import { logout } from "./logic/api";
@@ -17,17 +19,24 @@ function App() {
     logout();
   };
 
-  return (
-    <>
-      {isLoggedIn ? (
-        // Show DashboardPage if logged in
-        <Dashboard onLogout={handleLogout} />
-      ) : (
-        // Show LoginPage if not logged in
-        <SignIn onLogin={handleLogin} />
-      )}
-    </>
-  );
+  const router = createBrowserRouter([
+    {
+      path: "/login",
+      element: !isLoggedIn ? <SignIn onLogin={handleLogin} /> : <Navigate replace to="/" />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "/",
+      element: isLoggedIn ? <Dashboard onLogout={handleLogout} /> : <Navigate replace to="/login" />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "*",
+      element: <ErrorPage />,
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
