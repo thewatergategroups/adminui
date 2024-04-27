@@ -1,14 +1,12 @@
-import { Skeleton } from "@mantine/core";
+import { NavLink } from "@mantine/core";
+import { IconLayoutDashboard, IconUsers } from "@tabler/icons-react";
 
 export default function Navbar() {
   return (
     <div>
       Navbar
-      {Array(15)
-        .fill(0)
-        .map((_, index) => (
-          <Skeleton key={index} h={28} mt="sm" animate={false} />
-        ))}
+      <NavLink href="/users" label="Users" leftSection={<IconUsers size="1rem" stroke={1.5} />} />
+      <NavLink href="/" label="Dashboard" leftSection={<IconLayoutDashboard size="1rem" stroke={1.5} />} />
     </div>
   );
 }
