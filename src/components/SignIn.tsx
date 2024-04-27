@@ -30,7 +30,7 @@ export default function SignIn({ onLogin }: SignInProps) {
       alg: "ES256",
     };
     const VITE_API_URL = import.meta.env.VITE_API_URL;
-    const apiUrl = `${VITE_API_URL}/public/login`;
+    const apiUrl = `${VITE_API_URL}/login`;
     axios
       .post(apiUrl, postData)
       .then((response) => {

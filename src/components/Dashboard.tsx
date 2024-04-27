@@ -35,14 +35,3 @@ function Dashboard({ onLogout, children }: DashboardProps) {
 }
 
 export default Dashboard;
-
-{
-  /* <div>
-      <Typography variant="h4" gutterBottom color="black">
-        Welcome
-      </Typography>
-      <Button variant="contained" color="primary" onClick={onLogout}>
-        Logout
-      </Button>
-    </div> */
-}
