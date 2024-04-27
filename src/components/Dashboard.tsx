@@ -1,21 +1,48 @@
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { AppShell } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import Header from "./app-shell/Header";
+import Navbar from "./app-shell/Navbar";
 
 interface DashboardProps {
   onLogout: () => void;
+  children: React.ReactNode;
 }
 
-function Dashboard({ onLogout }: DashboardProps) {
+function Dashboard({ onLogout, children }: DashboardProps) {
+  const [opened, { toggle: toggleNavBar }] = useDisclosure(true);
+
   return (
-    <div>
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{
+        width: 300,
+        breakpoint: "sm",
+        collapsed: { mobile: !opened, desktop: !opened },
+      }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Header {...{ toggleNavBar, navBarExpanded: opened, onLogout }} />
+      </AppShell.Header>
+
+      <AppShell.Navbar p="md">
+        <Navbar />
+      </AppShell.Navbar>
+
+      <AppShell.Main>{children}</AppShell.Main>
+    </AppShell>
+  );
+}
+
+export default Dashboard;
+
+{
+  /* <div>
       <Typography variant="h4" gutterBottom color="black">
         Welcome
       </Typography>
       <Button variant="contained" color="primary" onClick={onLogout}>
         Logout
       </Button>
-    </div>
-  );
+    </div> */
 }
-
-export default Dashboard;

@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import ErrorPage from "./ErrorPage";
 import Dashboard from "./components/Dashboard";
 import SignIn from "./components/SignIn";
+import Landing from "./components/landing/Landing";
+import Users from "./components/user-management/Users";
 import { logout } from "./logic/api";
 
 function App() {
@@ -19,24 +21,43 @@ function App() {
     logout();
   };
 
-  const router = createBrowserRouter([
-    {
-      path: "/login",
-      element: !isLoggedIn ? <SignIn onLogin={handleLogin} /> : <Navigate replace to="/" />,
-      errorElement: <ErrorPage />,
-    },
-    {
-      path: "/",
-      element: isLoggedIn ? <Dashboard onLogout={handleLogout} /> : <Navigate replace to="/login" />,
-      errorElement: <ErrorPage />,
-    },
-    {
-      path: "*",
-      element: <ErrorPage />,
-    },
-  ]);
-
-  return <RouterProvider router={router} />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={!isLoggedIn ? <SignIn onLogin={handleLogin} /> : <Navigate replace to="/" />} />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute {...{ isLoggedIn }}>
+              <Dashboard onLogout={handleLogout}>
+                <Landing />
+              </Dashboard>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <PrivateRoute {...{ isLoggedIn }}>
+              <Dashboard onLogout={handleLogout}>
+                <Users />
+              </Dashboard>
+            </PrivateRoute>
+          }
+        />
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
+
+interface PrivateRouteProps {
+  isLoggedIn: boolean;
+  children: React.ReactNode;
+}
+
+const PrivateRoute = ({ isLoggedIn, children }: PrivateRouteProps) => {
+  return isLoggedIn ? children : <Navigate to="/login" />;
+};
