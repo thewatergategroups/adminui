@@ -1,6 +1,14 @@
 import { Button, NavLink } from "@mantine/core";
-import { IconLayoutDashboard, IconLogout, IconSettings, IconUsers } from "@tabler/icons-react";
-import { useLocation } from "react-router-dom";
+import {
+    IconLayoutDashboard,
+    IconLogout,
+    IconSettings,
+    IconUserSearch,
+    IconUserSquareRounded,
+    IconUsers,
+    IconUsersGroup,
+} from "@tabler/icons-react";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledNavbar = styled.nav`
@@ -19,21 +27,79 @@ interface NavbarProps {
     onLogout: () => void;
 }
 
+interface NavItem {
+    href: string;
+    label: string;
+    icon: React.ReactNode;
+    active: boolean;
+    children?: NavItem[];
+}
+
 export default function Navbar({ onLogout }: NavbarProps) {
     const location = useLocation();
-    const isActiveTab = (href: string) => location.pathname === href;
+    const navigate = useNavigate();
+    const isActiveTab = (href: string) => matchPath({ path: location.pathname }, href) !== null;
+    console.log(matchPath({ path: "/users/:hi" }, "/users/hi"));
+    const isOnUserPage = matchPath({ path: location.pathname }, "/users/:userId") !== null;
+    const userId = isOnUserPage ? matchPath({ path: location.pathname }, "/users/:userId")?.params.userId : "";
+    //TODO: store current user information in redux so we know if its us, also save focused user info so we know the name to show
 
     const navItems = [
         { href: "/", label: "Dashboard", icon: <IconLayoutDashboard size="1rem" stroke={1.5} />, active: isActiveTab("/") },
-        { href: "/users", label: "Users", icon: <IconUsers size="1rem" stroke={1.5} />, active: isActiveTab("/users") },
+        {
+            label: "Users",
+            icon: <IconUsers size="1rem" stroke={1.5} />,
+            children: [
+                {
+                    href: "/users",
+                    label: "Organization",
+                    icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+                    active: isActiveTab("/users"),
+                },
+                {
+                    href: "/users/me",
+                    label: "Me",
+                    icon: <IconUserSquareRounded size="1rem" stroke={1.5} />,
+                    active: isActiveTab("/users/me"),
+                },
+                ...(isOnUserPage
+                    ? [
+                          {
+                              href: `/users/${userId}`,
+                              label: "Selected User",
+                              icon: <IconUserSearch size="1rem" stroke={1.5} />,
+                              active: isActiveTab("/users/"),
+                          },
+                      ]
+                    : []),
+            ],
+        },
         { href: "/settings", label: "Settings", icon: <IconSettings size="1rem" stroke={1.5} />, active: isActiveTab("/settings") },
-    ];
+    ] as NavItem[];
 
     return (
         <StyledNavbar>
             <div className="nav-items-list">
                 {navItems.map((item) => (
-                    <NavLink key={item.href} href={item.href} label={item.label} leftSection={item.icon} active={item.active} />
+                    <NavLink
+                        key={item.label}
+                        href={item.href}
+                        label={item.label}
+                        leftSection={item.icon}
+                        active={item.active}
+                        childrenOffset={item.children ? 28 : 0}
+                        onClick={() => navigate(item.href)}
+                    >
+                        {item.children?.map((child) => (
+                            <NavLink
+                                key={child.href}
+                                label={child.label}
+                                leftSection={child.icon}
+                                active={child.active}
+                                onClick={() => navigate(child.href)}
+                            />
+                        ))}
+                    </NavLink>
                 ))}
             </div>
             <Button onClick={onLogout} leftSection={<IconLogout size="1rem" stroke={1.5} />}>

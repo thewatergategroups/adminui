@@ -12,7 +12,7 @@ const StyledMain = styled(AppShell.Main)`
 
 interface DashboardProps {
     onLogout: () => void;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 function Dashboard({ onLogout, children }: DashboardProps) {

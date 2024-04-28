@@ -88,7 +88,7 @@ const Users: React.FC = () => {
 
     return (
         <Table.ScrollContainer minWidth={800}>
-            <Table verticalSpacing="sm">
+            <Table verticalSpacing="sm" highlightOnHover>
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>User</Table.Th>

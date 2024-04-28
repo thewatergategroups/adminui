@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import SignIn from "./components/SignIn";
 import ErrorPage from "./components/error-page/ErrorPage";
 import Landing from "./components/landing/Landing";
+import UserInformation from "./components/user-management/UserInformation";
 import Users from "./components/user-management/Users";
 import { logout } from "./logic/api";
 
@@ -29,21 +30,15 @@ function App() {
                     element={
                         <PrivateRoute {...{ isLoggedIn }}>
                             <Dashboard onLogout={handleLogout}>
-                                <Landing />
+                                <Outlet />
                             </Dashboard>
                         </PrivateRoute>
                     }
-                />
-                <Route
-                    path="/users"
-                    element={
-                        <PrivateRoute {...{ isLoggedIn }}>
-                            <Dashboard onLogout={handleLogout}>
-                                <Users />
-                            </Dashboard>
-                        </PrivateRoute>
-                    }
-                />
+                >
+                    <Route index element={<Landing />} />
+                    <Route path="users" element={<Users />} />
+                    <Route path="users/:userId" element={<UserInformation />} />
+                </Route>
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
         </BrowserRouter>
