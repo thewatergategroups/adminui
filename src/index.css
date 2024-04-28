@@ -47,5 +47,5 @@ body {
     /* semantic variables */
     --card-bg: var(--gray-100);
     --card-border: var(--gray-300);
-    --main-content-bg: var(--gray-200);
+    --main-content-bg: var(--gray-100);
 }

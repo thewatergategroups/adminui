@@ -1,0 +1,42 @@
+[
+    {
+        "avatar": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-4.png",
+        "name": "Boris Boychev",
+        "job": "Engineer",
+        "email": "boris_boychev@gmail.com",
+        "role": "Collaborator",
+        "lastActive": "1 day ago",
+        "active": true,
+        "phone": "+44 (452) 886 09 12"
+    },
+    {
+        "avatar": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png",
+        "name": "Ciaran McKey",
+        "job": "Engineer",
+        "email": "ciaran_mckey@gmail.com",
+        "role": "Collaborator",
+        "lastActive": "1 day ago",
+        "active": true,
+        "phone": "+44 (452) 886 09 12"
+    },
+    {
+        "avatar": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png",
+        "name": "Mihai Varsandan",
+        "job": "DevOps Engineer",
+        "email": "mihai_varsandan@gmail.com",
+        "role": "Contractor",
+        "lastActive": "1 day ago",
+        "active": false,
+        "phone": "+44 (452) 886 09 12"
+    },
+    {
+        "avatar": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png",
+        "name": "David Culemann",
+        "job": "DevOps Engineer",
+        "email": "david_culemann@gmail.com",
+        "role": "Contractor",
+        "lastActive": "1 day ago",
+        "active": true,
+        "phone": "+44 (452) 886 09 12"
+    }
+]
