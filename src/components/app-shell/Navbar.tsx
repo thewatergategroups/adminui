@@ -6,7 +6,7 @@ import styled from "styled-components";
 const StyledNavbar = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.4rem;
 `;
 
 export default function Navbar() {
