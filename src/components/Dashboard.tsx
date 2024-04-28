@@ -33,7 +33,7 @@ function Dashboard({ onLogout, children }: DashboardProps) {
             </AppShell.Header>
 
             <AppShell.Navbar p="md">
-                <Navbar />
+                <Navbar {...{ onLogout }} />
             </AppShell.Navbar>
 
             <StyledMain>{children}</StyledMain>

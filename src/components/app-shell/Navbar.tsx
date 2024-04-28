@@ -1,15 +1,25 @@
-import { NavLink } from "@mantine/core";
-import { IconLayoutDashboard, IconSettings, IconUsers } from "@tabler/icons-react";
+import { Button, NavLink } from "@mantine/core";
+import { IconLayoutDashboard, IconLogout, IconSettings, IconUsers } from "@tabler/icons-react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledNavbar = styled.nav`
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    justify-content: space-between;
+    height: 100%;
+    .nav-items-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
 `;
 
-export default function Navbar() {
+interface NavbarProps {
+    onLogout: () => void;
+}
+
+export default function Navbar({ onLogout }: NavbarProps) {
     const location = useLocation();
     const isActiveTab = (href: string) => location.pathname === href;
 
@@ -21,9 +31,14 @@ export default function Navbar() {
 
     return (
         <StyledNavbar>
-            {navItems.map((item) => (
-                <NavLink key={item.href} href={item.href} label={item.label} leftSection={item.icon} active={item.active} />
-            ))}
+            <div className="nav-items-list">
+                {navItems.map((item) => (
+                    <NavLink key={item.href} href={item.href} label={item.label} leftSection={item.icon} active={item.active} />
+                ))}
+            </div>
+            <Button onClick={onLogout} leftSection={<IconLogout size="1rem" stroke={1.5} />}>
+                Log Out
+            </Button>
         </StyledNavbar>
     );
 }

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import ErrorPage from "./ErrorPage";
 import Dashboard from "./components/Dashboard";
 import SignIn from "./components/SignIn";
+import ErrorPage from "./components/error-page/ErrorPage";
 import Landing from "./components/landing/Landing";
 import Users from "./components/user-management/Users";
 import { logout } from "./logic/api";
