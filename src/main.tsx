@@ -10,11 +10,11 @@ const rootElement = document.getElementById("root") as Container;
 const queryClient = new QueryClient();
 
 createRoot(rootElement).render(
-  <React.StrictMode>
-    <MantineProvider>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </MantineProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <MantineProvider>
+            <QueryClientProvider client={queryClient}>
+                <App />
+            </QueryClientProvider>
+        </MantineProvider>
+    </React.StrictMode>
 );
