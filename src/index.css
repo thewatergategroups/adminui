@@ -31,6 +31,7 @@ body {
 
 /* ===== COLORS ===== */
 :root {
+    --white: #ffffff;
     /* light grays */
     --gray-100: #f5f5f5;
     --gray-200: #e0e0e0;
@@ -45,7 +46,7 @@ body {
     --gray-900: #111111;
 
     /* semantic variables */
-    --card-bg: var(--gray-100);
+    --card-bg: var(--white);
     --card-border: var(--gray-300);
     --main-content-bg: var(--gray-100);
 }

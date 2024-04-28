@@ -1,5 +1,6 @@
 import { Button, Container, SimpleGrid, Text, Title } from "@mantine/core";
 import Lottie from "lottie-react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BuildingAnimation from "../../assets/animations/404.json";
 
@@ -41,6 +42,8 @@ const StyledContainer = styled(Container)`
 `;
 
 export default function ErrorPage() {
+    const navigate = useNavigate();
+
     return (
         <StyledContainer className="root">
             <SimpleGrid spacing={{ base: 40, sm: 40 }} cols={{ base: 1, sm: 2 }}>
@@ -51,7 +54,7 @@ export default function ErrorPage() {
                         Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another
                         URL. If you think this is an error contact support.
                     </Text>
-                    <Button variant="outline" size="md" mt="xl" className="control" onClick={() => (document.location.href = "/")}>
+                    <Button variant="outline" size="md" mt="xl" className="control" onClick={() => navigate("/")}>
                         Get back to home page
                     </Button>
                 </div>
