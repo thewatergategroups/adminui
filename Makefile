@@ -2,8 +2,8 @@ REPOSITORY := authui
 
 build:
 	docker build --network=host \
-	-f docker/Dockerfile \
-	. -t $(REPOSITORY)
+	-f ./Dockerfile \
+	. -t ghcr.io/thewatergategroups/$(REPOSITORY):latest
 
 run: build up
 
@@ -17,8 +17,7 @@ debug:
 	docker compose run -it $(REPOSITORY) bash
 
 push: build
-	docker tag $(REPOSITORY):latest ghcr.io/1ndistinct/$(REPOSITORY):latest
-	docker push  ghcr.io/1ndistinct/$(REPOSITORY):latest
+	docker push  ghcr.io/thewatergategroups/$(REPOSITORY):latest
 
 template:
 	if [ ! -f secret_vals.yaml ]; then echo "secrets: {}" > secret_vals.yaml; fi

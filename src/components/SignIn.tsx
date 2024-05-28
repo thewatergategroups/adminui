@@ -29,8 +29,7 @@ export default function SignIn({ onLogin }: SignInProps) {
             scopes: ["read", "write", "admin"],
             alg: "ES256",
         };
-        const VITE_API_URL = import.meta.env.VITE_API_URL;
-        const apiUrl = `${VITE_API_URL}/login`;
+        const apiUrl = `https://auth.thewatergategroups.com/login`;
         axios
             .post(apiUrl, postData)
             .then((response) => {

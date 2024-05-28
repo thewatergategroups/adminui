@@ -1,20 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
-import SignIn from "./components/SignIn";
+import Cookies from 'js-cookie';
 import ErrorPage from "./components/error-page/ErrorPage";
 import Landing from "./components/landing/Landing";
 import UserInformation from "./components/user-management/UserInformation";
 import Users from "./components/user-management/Users";
-import { logout } from "./logic/api";
+import { logout, checkLoggedIn } from "./logic/api";
+
+
+const LOGIN_URL = 'https://auth.thewatergategroups.com';
+const REDIRECT_URI = `${window.location.origin}`;
+
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
-
-    // Function to handle successful login
-    const handleLogin = () => {
-        setIsLoggedIn(true);
-    };
+  
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            const authCookie = Cookies.get('session_id');
+            const allCookies = Cookies.get();
+            console.log('All Cookies:', allCookies);
+            console.log(`TESTING: ${authCookie}`);
+            console.log(document.cookie)
+      
+            if (!authCookie) {
+              window.location.href = `${LOGIN_URL}/login?rd=${encodeURIComponent(REDIRECT_URI)}`;
+            } else {
+              const result = await checkLoggedIn();
+              if (result) {
+                setIsLoggedIn(true);
+              } else {
+                window.location.href = `${LOGIN_URL}/login?redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+              }
+            }
+          };
+          checkLoginStatus();
+      }, []);
 
     const handleLogout = () => {
         setIsLoggedIn(false);
@@ -24,7 +46,6 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/login" element={!isLoggedIn ? <SignIn onLogin={handleLogin} /> : <Navigate replace to="/" />} />
                 <Route
                     path="/"
                     element={
