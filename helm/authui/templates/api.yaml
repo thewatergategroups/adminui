@@ -33,10 +33,7 @@ spec:
               memory: 500Mi
             requests:
               memory: 500Mi
-          command:
-            - bun
-            - serve  
-            - build
+
 
 
 ---
