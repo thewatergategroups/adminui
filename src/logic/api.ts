@@ -8,7 +8,7 @@ axios.defaults.withCredentials = true;
 
 export async function logout(): Promise<void | null> {
     try {
-        await axios.post(`${IDENTITY_URL}/logout`);
+        await axios.post(`${IDENTITY_URL}/logout`,{withCredentials: true});
         Cookies.remove("session_id");
         console.log("Logout successful");
     } catch (error) {
@@ -19,7 +19,10 @@ export async function logout(): Promise<void | null> {
 
 export async function checkLoggedIn(): Promise<void | boolean> {
     try {
-        await axios.get(`${IDENTITY_URL}/session/status`);
+        const resp = await axios.get(`${IDENTITY_URL}/session/status`);
+        if (resp.status !== 200){
+            return false
+        }
         return true;
     } catch (error) {
         console.error("Logout failed:", error);
@@ -29,7 +32,8 @@ export async function checkLoggedIn(): Promise<void | boolean> {
 
 export async function getUsers(): Promise<User[] | null> {
     try {
-        const res = await axios.get(`${IDENTITY_URL}/users`);
+        console.log(Cookies.get())
+        const res = await axios.get(`${IDENTITY_URL}/users`,{withCredentials: true});
         return res.data;
     } catch (error) {
         console.error("Error getting users:", error);

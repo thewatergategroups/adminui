@@ -24,3 +24,7 @@ dist-ssr
 *.sw?\\
 
 .env
+
+
+# Ignore DevSpace cache and log folder
+.devspace/

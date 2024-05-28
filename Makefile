@@ -7,6 +7,9 @@ build:
 
 run: build up
 
+dev:
+	devspace sync --upload-only --namespace apps --container authui
+
 up: 
 	docker compose up -d --remove-orphans
 

@@ -19,11 +19,7 @@ function App() {
     useEffect(() => {
         const checkLoginStatus = async () => {
             const authCookie = Cookies.get('session_id');
-            const allCookies = Cookies.get();
-            console.log('All Cookies:', allCookies);
-            console.log(`TESTING: ${authCookie}`);
-            console.log(document.cookie)
-      
+
             if (!authCookie) {
               window.location.href = `${LOGIN_URL}/login?rd=${encodeURIComponent(REDIRECT_URI)}`;
             } else {

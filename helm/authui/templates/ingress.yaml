@@ -26,4 +26,4 @@ spec:
           service:
             name: authui
             port:
-              number: 4173
+              number: 3000
