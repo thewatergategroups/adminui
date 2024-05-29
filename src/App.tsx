@@ -69,5 +69,5 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({ isLoggedIn, children }: PrivateRouteProps) => {
-    return isLoggedIn ? children : <Navigate to="/login" />;
+    return isLoggedIn ? children : <Navigate to="/" />;
 };
