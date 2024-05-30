@@ -61,7 +61,7 @@ export async function getScopes(): Promise<Role[] | null> {
 
 export async function getSelfUser(): Promise<User | null> {
     try {
-        const res = await axios.get(`${IDENTITY_URL}/users/user`, { withCredentials: true });
+        const res = await axios.get(`${IDENTITY_URL}/users/me`, { withCredentials: true });
         return res.data;
     } catch (error) {
         console.error("Error getting users:", error);
