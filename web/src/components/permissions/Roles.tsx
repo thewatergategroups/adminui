@@ -1,4 +1,4 @@
-import { Badge, Card, Text, Group } from "@mantine/core";
+import { Badge, Card, Group, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { getRoles } from "../../logic/api";
@@ -10,11 +10,11 @@ const Roles: React.FC = () => {
 
     return (
         <Group style={{ marginTop: 20 }}>
-            {displayData.map((role) => (
+            {displayData?.map((role) => (
                 <Card key={role.id_} shadow="sm" padding="md" radius="md" withBorder style={{ width: "600px" }}>
                     <Text>{role.id_}</Text>
                     <Group mt="xs">
-                        {role.scopes.map((scope, index) => (
+                        {role?.scopes?.map((scope, index) => (
                             <Badge key={index} color="blue" variant="light">
                                 {scope}
                             </Badge>

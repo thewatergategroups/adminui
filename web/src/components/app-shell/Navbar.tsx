@@ -41,13 +41,13 @@ export default function Navbar({ onLogout }: NavbarProps) {
     const isActiveTab = (href: string) => matchPath({ path: location.pathname }, href) !== null;
     const isOnUserPage = matchPath({ path: location.pathname }, "/users/:userId") !== null;
     const userId = isOnUserPage ? matchPath({ path: location.pathname }, "/users/:userId")?.params.userId : "";
-    //TODO: store current user information in redux so we know if its us, also save focused user info so we know the name to show
 
     const navItems = [
         { href: "/", label: "Dashboard", icon: <IconLayoutDashboard size="1rem" stroke={1.5} />, active: isActiveTab("/") },
         {
             label: "Users",
             icon: <IconUsers size="1rem" stroke={1.5} />,
+            active: isActiveTab("/users") || isActiveTab("/users/me") || isActiveTab("/users/"),
             children: [
                 {
                     href: "/users",

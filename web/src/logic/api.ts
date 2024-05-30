@@ -2,9 +2,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Role, User } from "./types";
 
-export const IDENTITY_URL = "https://auth.thewatergategroups.com"; // import.meta.env.VITE_AUTH_API_URL;
+export const IDENTITY_URL = "https://auth.thewatergategroups.com";
 
 axios.defaults.withCredentials = true;
+
 export async function logout(): Promise<void | null> {
     try {
         await axios.post(`${IDENTITY_URL}/logout`, { withCredentials: true });
