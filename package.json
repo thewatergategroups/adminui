@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@tabler/icons-react": "^3.5.0",
     "express": "^4.19.2",
     "http-proxy-middleware": "^3.0.0"
   }

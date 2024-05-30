@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { User } from "./types";
+import { Role, User } from "./types";
 
-export const IDENTITY_URL = import.meta.env.VITE_AUTH_API_URL;
+export const IDENTITY_URL ="https://auth.thewatergategroups.com" // import.meta.env.VITE_AUTH_API_URL;
 
 axios.defaults.withCredentials = true;
 export async function logout(): Promise<void | null> {
@@ -32,6 +32,26 @@ export async function checkLoggedIn(): Promise<void | boolean> {
 export async function getUsers(): Promise<User[] | null> {
     try {
         const res = await axios.get(`${IDENTITY_URL}/users`,{withCredentials: true});
+        return res.data;
+    } catch (error) {
+        console.error("Error getting users:", error);
+        return null;
+    }
+}
+
+export async function getRoles(): Promise<Role[] | null> {
+    try {
+        const res = await axios.get(`${IDENTITY_URL}/roles`,{withCredentials: true});
+        return res.data;
+    } catch (error) {
+        console.error("Error getting users:", error);
+        return null;
+    }
+}
+
+export async function getScopes(): Promise<Role[] | null> {
+    try {
+        const res = await axios.get(`${IDENTITY_URL}/scopes`,{withCredentials: true});
         return res.data;
     } catch (error) {
         console.error("Error getting users:", error);

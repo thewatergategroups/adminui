@@ -4,9 +4,11 @@ import Dashboard from "./components/Dashboard";
 import Cookies from 'js-cookie';
 import ErrorPage from "./components/error-page/ErrorPage";
 import Landing from "./components/landing/Landing";
-import UserInformation from "./components/user-management/UserInformation";
-import Users from "./components/user-management/Users";
+import UserInformation from "./components/permissions/UserInformation";
+import Users from "./components/permissions/Users";
+import Roles from "./components/permissions/Roles";
 import { logout, checkLoggedIn, IDENTITY_URL } from "./logic/api";
+import Scopes from "./components/permissions/Scopes";
 
 const REDIRECT_URI = `${window.location.origin}`;
 
@@ -51,6 +53,8 @@ function App() {
                 >
                     <Route index element={<Landing />} />
                     <Route path="users" element={<Users />} />
+                    <Route path="roles" element={<Roles />} />
+                    <Route path="scopes" element={<Scopes />} />
                     <Route path="users/:userId" element={<UserInformation />} />
                 </Route>
                 <Route path="*" element={<ErrorPage />} />

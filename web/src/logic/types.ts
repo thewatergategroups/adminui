@@ -8,3 +8,12 @@ export interface User {
     created_at:string;
     roles: Array<string>
 }
+
+export interface Role {
+    id_: string
+    scopes: string[]
+}
+
+export interface Scope {
+    id_: string
+}

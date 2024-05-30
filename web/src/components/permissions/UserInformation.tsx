@@ -3,6 +3,7 @@ import React from "react";
 import { getSelfUser } from "../../logic/api";
 import { Avatar, Badge, Card, Container, Group, Text, Title } from '@mantine/core';
 import { User } from "../../logic/types";
+import { IconUser } from '@tabler/icons-react';
 
 
 const defaultUser:User ={
@@ -24,7 +25,9 @@ const UserInformation: React.FC = () => {
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Group style={{ marginBottom: 10 }}>
               <Group>
-                <Avatar src="https://via.placeholder.com/150" alt={user.first_name} radius="xl" size="lg" />
+                <Avatar radius="xl" size="lg" color="blue">
+                    <IconUser size={40} />
+                </Avatar>
                 <div>
                   <Title order={2}>{`${user.first_name} ${user.surname}`}</Title>
                   <Text c="dimmed">{user.email}</Text>

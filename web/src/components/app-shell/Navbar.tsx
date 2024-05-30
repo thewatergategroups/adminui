@@ -56,6 +56,18 @@ export default function Navbar({ onLogout }: NavbarProps) {
                     active: isActiveTab("/users"),
                 },
                 {
+                    href: "/roles",
+                    label: "Roles",
+                    icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+                    active: isActiveTab("/roles"),
+                },
+                {
+                    href: "/scopes",
+                    label: "Scopes",
+                    icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+                    active: isActiveTab("/scopes"),
+                },
+                {
                     href: "/users/me",
                     label: "Me",
                     icon: <IconUserSquareRounded size="1rem" stroke={1.5} />,

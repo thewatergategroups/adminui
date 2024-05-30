@@ -4,13 +4,18 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { getUsers } from "../../logic/api";
 import { User } from "../../logic/types"
-
+import { IconUser } from '@tabler/icons-react';
 
 const Users: React.FC = () => {
     const { data = [] } = useQuery({ queryFn: getUsers, queryKey: ["users"] });
     const displayData = data as User[];
     const rows = displayData.map((item) => (
         <Table.Tr key={item.id_}>
+            <Table.Td>
+            <Avatar radius="xl" size="lg" color="blue">
+                    <IconUser size={40} />
+            </Avatar>
+            </Table.Td>
             <Table.Td>
                 <Group gap="sm">
                     {/* <Avatar size={40} src={item.avatar} radius={40} /> */}
@@ -44,7 +49,7 @@ const Users: React.FC = () => {
 
             <Table.Td>
                 <Group gap={0} justify="flex-end">
-                    <ActionIcon variant="subtle" color="gray">
+                    <ActionIcon variant="subtle" color="blue">
                         <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                     <ActionIcon variant="subtle" color="red">
@@ -60,6 +65,7 @@ const Users: React.FC = () => {
             <Table verticalSpacing="sm" highlightOnHover>
                 <Table.Thead>
                     <Table.Tr>
+                        <Table.Th></Table.Th>
                         <Table.Th>User</Table.Th>
                         <Table.Th>Email</Table.Th>
                         <Table.Th>Roles</Table.Th>
