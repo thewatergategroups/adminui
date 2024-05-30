@@ -5,14 +5,12 @@ build:
 	-f ./Dockerfile \
 	. -t ghcr.io/thewatergategroups/$(REPOSITORY):latest
 
-run: build up
-
 dev:
 	devspace sync --upload-only --namespace apps --container authui
 
 up: 
 	docker compose up -d --remove-orphans
-
+	node server.js
 down: 
 	docker compose down
 

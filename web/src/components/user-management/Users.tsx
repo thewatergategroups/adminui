@@ -3,41 +3,20 @@ import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { getUsers } from "../../logic/api";
-import dummyUsers from "./dummy-users.json";
+import { User } from "../../logic/types"
 
-interface dummyUser {
-    name: string;
-    email: string;
-    avatar: string;
-    role: string;
-    lastActive: string;
-    active: boolean;
-    job: string;
-    phone: string;
-}
-
-const rolesData = ["Manager", "Collaborator", "Contractor"];
-
-const jobColors: Record<string, string> = {
-    engineer: "blue",
-    "devops engineer": "cyan",
-    dev: "pink",
-};
 
 const Users: React.FC = () => {
     const { data = [] } = useQuery({ queryFn: getUsers, queryKey: ["users"] });
-    console.log("users:", data);
-
-    const displayData = dummyUsers as dummyUser[];
-
+    const displayData = data as User[];
     const rows = displayData.map((item) => (
-        <Table.Tr key={item.name}>
+        <Table.Tr key={item.user_id}>
             <Table.Td>
                 <Group gap="sm">
-                    <Avatar size={40} src={item.avatar} radius={40} />
+                    {/* <Avatar size={40} src={item.avatar} radius={40} /> */}
                     <div>
                         <Text fz="sm" fw={500}>
-                            {item.name}
+                            {item.user_id}
                         </Text>
                         <Text fz="xs" c="dimmed">
                             {item.email}
@@ -46,9 +25,9 @@ const Users: React.FC = () => {
                 </Group>
             </Table.Td>
             <Table.Td>
-                <Badge color={jobColors[item.job.toLowerCase()]} variant="light">
+                {/* <Badge color={jobColors[item.job.toLowerCase()]} variant="light">
                     {item.job}
-                </Badge>
+                </Badge> */}
             </Table.Td>
             <Table.Td>
                 <Anchor component="button" size="sm">
@@ -56,14 +35,14 @@ const Users: React.FC = () => {
                 </Anchor>
             </Table.Td>
             <Table.Td>
-                <Text fz="sm">{item.phone}</Text>
+                {/* <Text fz="sm">{item.phone}</Text> */}
             </Table.Td>
             <Table.Td>
-                <Select data={rolesData} defaultValue={item.role} variant="unstyled" allowDeselect={false} />
+                {/* <Select data={rolesData} defaultValue={item.role} variant="unstyled" allowDeselect={false} /> */}
             </Table.Td>
-            <Table.Td>{item.lastActive}</Table.Td>
+            {/* <Table.Td>{item.lastActive}</Table.Td> */}
             <Table.Td>
-                {item.active ? (
+                {/* {item.active ? (
                     <Badge fullWidth variant="light">
                         Active
                     </Badge>
@@ -71,7 +50,7 @@ const Users: React.FC = () => {
                     <Badge color="gray" fullWidth variant="light">
                         Disabled
                     </Badge>
-                )}
+                )} */}
             </Table.Td>
             <Table.Td>
                 <Group gap={0} justify="flex-end">

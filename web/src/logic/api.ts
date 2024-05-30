@@ -2,10 +2,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { User } from "./types";
 
-const IDENTITY_URL = `https://auth.thewatergategroups.com`
+export const IDENTITY_URL = import.meta.env.VITE_AUTH_API_URL;
 
 axios.defaults.withCredentials = true;
-
 export async function logout(): Promise<void | null> {
     try {
         await axios.post(`${IDENTITY_URL}/logout`,{withCredentials: true});
@@ -32,7 +31,6 @@ export async function checkLoggedIn(): Promise<void | boolean> {
 
 export async function getUsers(): Promise<User[] | null> {
     try {
-        console.log(Cookies.get())
         const res = await axios.get(`${IDENTITY_URL}/users`,{withCredentials: true});
         return res.data;
     } catch (error) {

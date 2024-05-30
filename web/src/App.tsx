@@ -6,10 +6,8 @@ import ErrorPage from "./components/error-page/ErrorPage";
 import Landing from "./components/landing/Landing";
 import UserInformation from "./components/user-management/UserInformation";
 import Users from "./components/user-management/Users";
-import { logout, checkLoggedIn } from "./logic/api";
+import { logout, checkLoggedIn, IDENTITY_URL } from "./logic/api";
 
-
-const LOGIN_URL = 'https://auth.thewatergategroups.com';
 const REDIRECT_URI = `${window.location.origin}`;
 
 
@@ -20,13 +18,13 @@ function App() {
         const checkLoginStatus = async () => {
             const authCookie = Cookies.get('session_id');
             if (!authCookie) {
-              window.location.href = `${LOGIN_URL}/login?rd=${encodeURIComponent(REDIRECT_URI)}`;
+              window.location.href = `${IDENTITY_URL}/login?rd=${encodeURIComponent(REDIRECT_URI)}`;
             } else {
               const result = await checkLoggedIn();
               if (result) {
                 setIsLoggedIn(true);
               } else {
-                window.location.href = `${LOGIN_URL}/login?redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+                window.location.href = `${IDENTITY_URL}/login?redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
               }
             }
           };

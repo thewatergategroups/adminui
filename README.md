@@ -28,3 +28,19 @@ export default {
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+### For local dev, you will need to edit your `/etc/host` file on your machine
+1. You should map your custom domain to 127.0.0.1 in your hosts file, as 127.0.0.1 is the loopback address for localhost.
+2. You can run make dev and navigate to `https://dev.thewatergategroups.com` in the browser
+##### On Windows
+1. Open Notepad as an administrator.
+2. Open the hosts file located at `C:\Windows\System32\drivers\etc\hosts`.
+3. Add an entry for your custom domain:
+  - `127.0.0.1 dev.thewatergategroups.com`
+
+#### On macOS or Linux
+1. Open a terminal.
+2. Use a text editor to open the `/etc/hosts` file.
+  - sudo vim /etc/hosts
+  - Add an entry for your custom domain:
+    - `127.0.0.1 dev.thewatergategroups.com`

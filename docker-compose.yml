@@ -1,9 +1,10 @@
 version: "3.9"
 services:
-
   authui: 
     image: ghcr.io/thewatergategroups/authui:latest
-    # volumes:
-    #   - ./:/app
+    volumes:
+      - ./web:/app
     network_mode: host
-    command: ["bun", "run","preview"]
+    env_file:
+      - ./web/.env
+    command: ["bun", "dev"]
