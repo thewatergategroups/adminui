@@ -38,3 +38,13 @@ export async function getUsers(): Promise<User[] | null> {
         return null;
     }
 }
+
+export async function getSelfUser(): Promise<User | null> {
+    try {
+        const res = await axios.get(`${IDENTITY_URL}/users/user`,{withCredentials: true});
+        return res.data;
+    } catch (error) {
+        console.error("Error getting users:", error);
+        return null;
+    }
+}
