@@ -2,12 +2,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Role, User } from "./types";
 
-export const IDENTITY_URL ="https://auth.thewatergategroups.com" // import.meta.env.VITE_AUTH_API_URL;
+export const IDENTITY_URL = "https://auth.thewatergategroups.com"; // import.meta.env.VITE_AUTH_API_URL;
 
 axios.defaults.withCredentials = true;
 export async function logout(): Promise<void | null> {
     try {
-        await axios.post(`${IDENTITY_URL}/logout`,{withCredentials: true});
+        await axios.post(`${IDENTITY_URL}/logout`, { withCredentials: true });
         Cookies.remove("session_id");
         console.log("Logout successful");
     } catch (error) {
@@ -19,8 +19,8 @@ export async function logout(): Promise<void | null> {
 export async function checkLoggedIn(): Promise<void | boolean> {
     try {
         const resp = await axios.get(`${IDENTITY_URL}/session/status`);
-        if (resp.status !== 200){
-            return false
+        if (resp.status !== 200) {
+            return false;
         }
         return true;
     } catch (error) {
@@ -31,7 +31,7 @@ export async function checkLoggedIn(): Promise<void | boolean> {
 
 export async function getUsers(): Promise<User[] | null> {
     try {
-        const res = await axios.get(`${IDENTITY_URL}/users`,{withCredentials: true});
+        const res = await axios.get(`${IDENTITY_URL}/users`, { withCredentials: true });
         return res.data;
     } catch (error) {
         console.error("Error getting users:", error);
@@ -41,7 +41,7 @@ export async function getUsers(): Promise<User[] | null> {
 
 export async function getRoles(): Promise<Role[] | null> {
     try {
-        const res = await axios.get(`${IDENTITY_URL}/roles`,{withCredentials: true});
+        const res = await axios.get(`${IDENTITY_URL}/roles`, { withCredentials: true });
         return res.data;
     } catch (error) {
         console.error("Error getting users:", error);
@@ -51,7 +51,7 @@ export async function getRoles(): Promise<Role[] | null> {
 
 export async function getScopes(): Promise<Role[] | null> {
     try {
-        const res = await axios.get(`${IDENTITY_URL}/scopes`,{withCredentials: true});
+        const res = await axios.get(`${IDENTITY_URL}/scopes`, { withCredentials: true });
         return res.data;
     } catch (error) {
         console.error("Error getting users:", error);
@@ -61,7 +61,7 @@ export async function getScopes(): Promise<Role[] | null> {
 
 export async function getSelfUser(): Promise<User | null> {
     try {
-        const res = await axios.get(`${IDENTITY_URL}/users/user`,{withCredentials: true});
+        const res = await axios.get(`${IDENTITY_URL}/users/user`, { withCredentials: true });
         return res.data;
     } catch (error) {
         console.error("Error getting users:", error);

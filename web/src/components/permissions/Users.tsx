@@ -3,8 +3,8 @@ import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { getUsers } from "../../logic/api";
-import { User } from "../../logic/types"
-import { IconUser } from '@tabler/icons-react';
+import { User } from "../../logic/types";
+import { IconUser } from "@tabler/icons-react";
 
 const Users: React.FC = () => {
     const { data = [] } = useQuery({ queryFn: getUsers, queryKey: ["users"] });
@@ -12,9 +12,9 @@ const Users: React.FC = () => {
     const rows = displayData.map((item) => (
         <Table.Tr key={item.id_}>
             <Table.Td>
-            <Avatar radius="xl" size="lg" color="blue">
+                <Avatar radius="xl" size="lg" color="blue">
                     <IconUser size={40} />
-            </Avatar>
+                </Avatar>
             </Table.Td>
             <Table.Td>
                 <Group gap="sm">
@@ -35,15 +35,15 @@ const Users: React.FC = () => {
                 </Anchor>
             </Table.Td>
             <Table.Td>
-            <List>
-            {item.roles.map((role, index) => (
-                <List.Item key={index}>
-                <Badge color="blue" variant="light">
-                    {role}
-                </Badge>
-                </List.Item>
-            ))}
-            </List>
+                <List>
+                    {item.roles.map((role, index) => (
+                        <List.Item key={index}>
+                            <Badge color="blue" variant="light">
+                                {role}
+                            </Badge>
+                        </List.Item>
+                    ))}
+                </List>
             </Table.Td>
             <Table.Td>{new Date(item.created_at).toDateString()}</Table.Td>
 

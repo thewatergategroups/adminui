@@ -5,15 +5,15 @@ export interface User {
     surname: string;
     dob: string;
     postcode: string;
-    created_at:string;
-    roles: Array<string>
+    created_at: string;
+    roles: Array<string>;
 }
 
 export interface Role {
-    id_: string
-    scopes: string[]
+    id_: string;
+    scopes: string[];
 }
 
 export interface Scope {
-    id_: string
+    id_: string;
 }
