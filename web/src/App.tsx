@@ -6,6 +6,7 @@ import ErrorPage from "./components/error-page/ErrorPage";
 import Landing from "./components/landing/Landing";
 import UserInformation from "./components/permissions/UserInformation";
 import Users from "./components/permissions/Users";
+import Clients from "./components/permissions/Clients";
 import Roles from "./components/permissions/Roles";
 import { logout, checkLoggedIn, IDENTITY_URL } from "./logic/api";
 import Scopes from "./components/permissions/Scopes";
@@ -52,6 +53,7 @@ function App() {
                 >
                     <Route index element={<Landing />} />
                     <Route path="users" element={<Users />} />
+                    <Route path="clients" element={<Clients />} />
                     <Route path="roles" element={<Roles />} />
                     <Route path="scopes" element={<Scopes />} />
                     <Route path="users/:userId" element={<UserInformation />} />

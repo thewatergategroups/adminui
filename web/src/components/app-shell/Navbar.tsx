@@ -45,13 +45,13 @@ export default function Navbar({ onLogout }: NavbarProps) {
     const navItems = [
         { href: "/", label: "Dashboard", icon: <IconLayoutDashboard size="1rem" stroke={1.5} />, active: isActiveTab("/") },
         {
-            label: "Users",
+            label: "Identity",
             icon: <IconUsers size="1rem" stroke={1.5} />,
             active: isActiveTab("/users") || isActiveTab("/users/me") || isActiveTab("/users/"),
             children: [
                 {
                     href: "/users",
-                    label: "Organization",
+                    label: "Users",
                     icon: <IconUsersGroup size="1rem" stroke={1.5} />,
                     active: isActiveTab("/users"),
                 },
@@ -66,6 +66,12 @@ export default function Navbar({ onLogout }: NavbarProps) {
                     label: "Scopes",
                     icon: <IconUsersGroup size="1rem" stroke={1.5} />,
                     active: isActiveTab("/scopes"),
+                },
+                {
+                    href: "/clients",
+                    label: "Clients",
+                    icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+                    active: isActiveTab("/clients"),
                 },
                 {
                     href: "/users/me",

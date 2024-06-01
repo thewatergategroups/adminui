@@ -9,6 +9,16 @@ export interface User {
     roles: Array<string>;
 }
 
+export interface Client {
+    id_: string;
+    type: string;
+    name: string;
+    description: string;
+    roles: Array<string>;
+    redirect_uris: Array<string>;
+    grant_types: Array<string>;
+}
+
 export interface Role {
     id_: string;
     scopes: string[];

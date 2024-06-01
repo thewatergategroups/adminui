@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   authui: 
     image: ghcr.io/thewatergategroups/authui:latest

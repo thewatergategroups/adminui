@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Role, User } from "./types";
+import { Role, User, Client } from "./types";
 
 export const IDENTITY_URL = "https://auth.thewatergategroups.com";
 
@@ -33,6 +33,16 @@ export async function checkLoggedIn(): Promise<void | boolean> {
 export async function getUsers(): Promise<User[] | null> {
     try {
         const res = await axios.get(`${IDENTITY_URL}/users`, { withCredentials: true });
+        return res.data;
+    } catch (error) {
+        console.error("Error getting users:", error);
+        return null;
+    }
+}
+
+export async function getClients(): Promise<Client[] | null> {
+    try {
+        const res = await axios.get(`${IDENTITY_URL}/clients`, { withCredentials: true });
         return res.data;
     } catch (error) {
         console.error("Error getting users:", error);
