@@ -3,7 +3,7 @@ import { IconTrash, IconUser, IconUserPlus } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import styled from "styled-components";
-import { getUsers } from "../../logic/api";
+import { getUsers, handleCreateUser } from "../../logic/api";
 import { User } from "../../logic/types";
 import EditUser from "./editUser";
 
@@ -12,15 +12,10 @@ const Users: React.FC = () => {
     const queryClient = useQueryClient();
     const { data = [] } = useQuery({ queryFn: getUsers, queryKey: ["users"] });
 
-    const { mutate, isLoading: isCreatingUser } = useMutation({
-        mutationFn: (newUser) => {
-            queryClient.cancelQueries("users");
-            const previousValue = queryClient.getQueryData("users");
-            queryClient.setQueryData("users", (old: User[] = []) => [...old, newUser]);
-            return () => queryClient.setQueryData("users", previousValue);
-        },
-        onSettled: () => {
-            queryClient.invalidateQueries(["users"]);
+    const { mutate: createUser, isPending: isCreatingUser } = useMutation({
+        mutationFn: handleCreateUser,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["users"] });
         },
     });
 
@@ -78,7 +73,7 @@ const Users: React.FC = () => {
     return (
         <StyledContainer>
             <div className="table-controls">
-                <ActionIcon loading={isCreatingUser} loaderProps={{ type: "dots" }}>
+                <ActionIcon loading={isCreatingUser} loaderProps={{ type: "dots" }} onClick={() => createUser()}>
                     <IconUserPlus />
                 </ActionIcon>
             </div>

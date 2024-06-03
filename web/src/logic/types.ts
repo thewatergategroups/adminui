@@ -1,3 +1,15 @@
+type Alg = "ES256" | "RS256";
+
+export interface UserRequest {
+    alg: Alg;
+    email: string;
+    first_name: string;
+    surname: string;
+    dob: string;
+    postcode: string;
+    password: string;
+}
+
 export interface User {
     id_: string;
     email: string;

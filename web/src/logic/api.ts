@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Role, User, Client } from "./types";
+import { Client, Role, User, UserRequest } from "./types";
 
 export const IDENTITY_URL = "https://auth.thewatergategroups.com";
 
@@ -97,6 +97,16 @@ export async function getSelfUser(): Promise<User | null> {
         return res.data;
     } catch (error) {
         console.error("Error getting users:", error);
+        return null;
+    }
+}
+
+export async function handleCreateUser(user: UserRequest): Promise<User | null> {
+    try {
+        const res = await axios.post(`${IDENTITY_URL}/users/user`, user, { withCredentials: true });
+        return res.data;
+    } catch (error) {
+        console.error("Error creating user:", error);
         return null;
     }
 }
