@@ -5,6 +5,7 @@ import React from "react";
 import { getClients } from "../../logic/api";
 import { Client } from "../../logic/types";
 import { IconUser } from "@tabler/icons-react";
+import EditClient from "./editClients";
 
 const Clients: React.FC = () => {
     const { data = [] } = useQuery({ queryFn: getClients, queryKey: ["clients"] });
@@ -75,9 +76,7 @@ const Clients: React.FC = () => {
 
             <Table.Td>
                 <Group gap={0} justify="flex-end">
-                    <ActionIcon variant="subtle" color="blue">
-                        <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                    </ActionIcon>
+                    <EditClient client={item} />
                     <ActionIcon variant="subtle" color="red">
                         <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>

@@ -47,18 +47,18 @@ const EditClient: React.FC<EditClientProps> = ({ client }) => {
             <StyledDrawer
                 opened={isDrawerOpen}
                 onClose={() => setIsDrawerOpen(false)}
-                title="Edit User"
+                title="Edit Client"
                 padding="md"
                 size="md"
                 position="right"
             >
-                <Text>ID  {clientData.id_}</Text>
+                <Text>ID:    {clientData.id_}</Text>
                 <TextInput label="Name" name="name" value={clientData.name} onChange={handleInputChange} required />
                 <TextInput label="Description" name="description" value={clientData.description} onChange={handleInputChange} required />
                 <TextInput label="Type" name="type" value={clientData.type} onChange={handleInputChange} required />
                 <MultiSelect label="Roles" data={["admin", "standard", "readonly"]} value={clientData.roles} onChange={handleRolesChange} />
-                <MultiSelect label="Grant Types" data={['authorization_code', 'implicit', 'password', 'client_credentials', 'refresh_token']} value={clientData.grant_types} onChange={handleGrantTypesChange} creatable />
-                <MultiSelect label="Redirect URIs" data={clientData.redirect_uris} value={clientData.redirect_uris} onChange={handleRedirectUrisChange} creatable />
+                <MultiSelect label="Grant Types" data={['authorization_code', 'implicit',  'refresh_token']} value={clientData.grant_types} onChange={handleGrantTypesChange} />  // 'password', 'client_credentials',
+                <MultiSelect label="Redirect URIs" data={clientData.redirect_uris} value={clientData.redirect_uris} onChange={handleRedirectUrisChange} />
                 <Button onClick={handleSubmit}>Save Changes</Button>
             </StyledDrawer>
         </Fragment>
