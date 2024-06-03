@@ -61,6 +61,27 @@ export async function patchUser(user: User): Promise<null> {
         }
 }
 
+export async function patchClient(client: Client): Promise<null> {
+    try {
+        const res = await axios.patch(`${IDENTITY_URL}/clients/client`,client, {
+             withCredentials: true,      
+             headers: {
+                'Content-Type': 'application/json',
+          }, 
+        });
+        if (res.status === 200) {
+            console.log('Client updated successfully');
+            return null;
+          } else {
+            console.error('Failed to update user', res.status);
+            throw new Error('Failed to update user');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          throw error;
+        }
+}
+
 export async function getClients(): Promise<Client[] | null> {
     try {
         const res = await axios.get(`${IDENTITY_URL}/clients`, { withCredentials: true });
