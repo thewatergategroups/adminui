@@ -1,14 +1,31 @@
 import { ActionIcon, Anchor, Avatar, Badge, Group, List, Table, Text, rem } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
+import { IconTrash, IconUser, IconUserPlus } from "@tabler/icons-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import styled from "styled-components";
 import { getUsers } from "../../logic/api";
 import { User } from "../../logic/types";
-import { IconUser } from "@tabler/icons-react";
-import EditUser  from "./editUser"
+import EditUser from "./editUser";
+
+const StyledContainer = styled.div``;
 const Users: React.FC = () => {
+    const queryClient = useQueryClient();
     const { data = [] } = useQuery({ queryFn: getUsers, queryKey: ["users"] });
+
+    const { mutate, isLoading: isCreatingUser } = useMutation({
+        mutationFn: (newUser) => {
+            queryClient.cancelQueries("users");
+            const previousValue = queryClient.getQueryData("users");
+            queryClient.setQueryData("users", (old: User[] = []) => [...old, newUser]);
+            return () => queryClient.setQueryData("users", previousValue);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries(["users"]);
+        },
+    });
+
     const displayData = data as User[];
+
     const rows = displayData.map((item) => (
         <Table.Tr key={item.id_}>
             <Table.Td>
@@ -59,20 +76,27 @@ const Users: React.FC = () => {
     ));
 
     return (
-        <Table.ScrollContainer minWidth={800}>
-            <Table verticalSpacing="sm" highlightOnHover>
-                <Table.Thead>
-                    <Table.Tr>
-                        <Table.Th></Table.Th>
-                        <Table.Th>User</Table.Th>
-                        <Table.Th>Email</Table.Th>
-                        <Table.Th>Roles</Table.Th>
-                        <Table.Th>Created At</Table.Th>
-                    </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>{rows}</Table.Tbody>
-            </Table>
-        </Table.ScrollContainer>
+        <StyledContainer>
+            <div className="table-controls">
+                <ActionIcon loading={isCreatingUser} loaderProps={{ type: "dots" }}>
+                    <IconUserPlus />
+                </ActionIcon>
+            </div>
+            <Table.ScrollContainer minWidth={800}>
+                <Table verticalSpacing="sm" highlightOnHover>
+                    <Table.Thead>
+                        <Table.Tr>
+                            <Table.Th></Table.Th>
+                            <Table.Th>User</Table.Th>
+                            <Table.Th>Email</Table.Th>
+                            <Table.Th>Roles</Table.Th>
+                            <Table.Th>Created At</Table.Th>
+                        </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>{rows}</Table.Tbody>
+                </Table>
+            </Table.ScrollContainer>
+        </StyledContainer>
     );
 };
 
