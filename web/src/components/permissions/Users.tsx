@@ -1,11 +1,11 @@
 import { ActionIcon, Anchor, Avatar, Badge, Group, List, Table, Text, rem } from "@mantine/core";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { IconTrash } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { getUsers } from "../../logic/api";
 import { User } from "../../logic/types";
 import { IconUser } from "@tabler/icons-react";
-
+import EditUser  from "./editUser"
 const Users: React.FC = () => {
     const { data = [] } = useQuery({ queryFn: getUsers, queryKey: ["users"] });
     const displayData = data as User[];
@@ -49,9 +49,7 @@ const Users: React.FC = () => {
 
             <Table.Td>
                 <Group gap={0} justify="flex-end">
-                    <ActionIcon variant="subtle" color="blue">
-                        <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                    </ActionIcon>
+                    <EditUser user={item} />
                     <ActionIcon variant="subtle" color="red">
                         <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
