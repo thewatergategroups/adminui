@@ -1,4 +1,4 @@
-import { ActionIcon, Button, TextInput } from "@mantine/core";
+import { ActionIcon, Button, Select, TextInput } from "@mantine/core";
 import { IconUserPlus } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -10,9 +10,10 @@ import Drawer from "../shared/Drawer";
 export default function CreateUser() {
     const queryClient = useQueryClient();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [hasAttempted, setHasAttempted] = useState(false);
 
     const [user, setUser] = useState<UserRequest>({
-        alg: undefined,
+        alg: "ES256",
         email: "",
         first_name: "",
         surname: "",
@@ -37,7 +38,8 @@ export default function CreateUser() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        createUser(user);
+        if (Object.values(user).some((value) => !value)) setHasAttempted(true);
+        else createUser(user);
     };
 
     return (
@@ -47,13 +49,47 @@ export default function CreateUser() {
             </ActionIcon>
             <Drawer opened={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} title="Create User">
                 <form onSubmit={handleSubmit}>
-                    <TextInput label="Alg" name="alg" value={user.alg} onChange={handleChange} />
-                    <TextInput label="Email" name="email" value={user.email} onChange={handleChange} />
-                    <TextInput label="First Name" name="first_name" value={user.first_name} onChange={handleChange} />
-                    <TextInput label="Surname" name="surname" value={user.surname} onChange={handleChange} />
-                    <TextInput label="DOB" name="dob" value={user.dob} onChange={handleChange} />
-                    <TextInput label="Postcode" name="postcode" value={user.postcode} onChange={handleChange} />
-                    <TextInput label="Password" name="password" value={user.password} onChange={handleChange} type="password" />
+                    <Select
+                        label="Alg"
+                        name="alg"
+                        value={user.alg}
+                        onChange={(value: string | null) =>
+                            handleChange({ target: { name: "alg", value: value as string } } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        data={["ES256", "RS256"]}
+                        allowDeselect={false}
+                    />
+                    <TextInput label="Email" name="email" value={user.email} onChange={handleChange} error={hasAttempted && !user.email} />
+                    <TextInput
+                        label="First Name"
+                        name="first_name"
+                        value={user.first_name}
+                        onChange={handleChange}
+                        error={hasAttempted && !user.first_name}
+                    />
+                    <TextInput
+                        label="Surname"
+                        name="surname"
+                        value={user.surname}
+                        onChange={handleChange}
+                        error={hasAttempted && !user.surname}
+                    />
+                    <TextInput label="DOB" name="dob" value={user.dob} onChange={handleChange} error={hasAttempted && !user.dob} />
+                    <TextInput
+                        label="Postcode"
+                        name="postcode"
+                        value={user.postcode}
+                        onChange={handleChange}
+                        error={hasAttempted && !user.postcode}
+                    />
+                    <TextInput
+                        label="Password"
+                        name="password"
+                        value={user.password}
+                        onChange={handleChange}
+                        type="password"
+                        error={hasAttempted && !user.password}
+                    />
                     <Button type="submit">Create User</Button>
                 </form>
             </Drawer>
