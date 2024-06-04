@@ -1,4 +1,4 @@
-type Alg = "ES256" | "RS256";
+type Alg = "ES256" | "RS256" | undefined;
 
 export interface UserRequest {
     alg: Alg;

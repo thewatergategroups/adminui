@@ -1,23 +1,17 @@
 import { ActionIcon, Anchor, Avatar, Badge, Group, List, Table, Text, rem } from "@mantine/core";
-import { IconTrash, IconUser, IconUserPlus } from "@tabler/icons-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { IconTrash, IconUser } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import styled from "styled-components";
-import { getUsers, handleCreateUser } from "../../logic/api";
+import { getUsers } from "../../logic/api";
 import { User } from "../../logic/types";
-import EditUser from "./editUser";
+import CreateUser from "./CreateUser";
+import EditUser from "./EditUser";
 
 const StyledContainer = styled.div``;
-const Users: React.FC = () => {
-    const queryClient = useQueryClient();
-    const { data = [] } = useQuery({ queryFn: getUsers, queryKey: ["users"] });
 
-    const { mutate: createUser, isPending: isCreatingUser } = useMutation({
-        mutationFn: handleCreateUser,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["users"] });
-        },
-    });
+const Users: React.FC = () => {
+    const { data = [] } = useQuery({ queryFn: getUsers, queryKey: ["users"] });
 
     const displayData = data as User[];
 
@@ -73,9 +67,7 @@ const Users: React.FC = () => {
     return (
         <StyledContainer>
             <div className="table-controls">
-                <ActionIcon loading={isCreatingUser} loaderProps={{ type: "dots" }} onClick={() => createUser()}>
-                    <IconUserPlus />
-                </ActionIcon>
+                <CreateUser />
             </div>
             <Table.ScrollContainer minWidth={800}>
                 <Table verticalSpacing="sm" highlightOnHover>
