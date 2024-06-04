@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
+import "@mantine/dates/styles.css";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
-import Cookies from "js-cookie";
 import ErrorPage from "./components/error-page/ErrorPage";
 import Landing from "./components/landing/Landing";
-import UserInformation from "./components/permissions/UserInformation";
-import Users from "./components/permissions/Users";
 import Clients from "./components/permissions/Clients";
 import Roles from "./components/permissions/Roles";
-import { logout, checkLoggedIn, IDENTITY_URL } from "./logic/api";
 import Scopes from "./components/permissions/Scopes";
+import UserInformation from "./components/permissions/UserInformation";
+import Users from "./components/permissions/Users";
+import { IDENTITY_URL, checkLoggedIn, logout } from "./logic/api";
 
 const REDIRECT_URI = `${window.location.origin}`;
 

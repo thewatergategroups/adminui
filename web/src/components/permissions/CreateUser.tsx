@@ -1,4 +1,5 @@
 import { ActionIcon, Button, Select, TextInput } from "@mantine/core";
+import { DateInput, DateValue } from "@mantine/dates";
 import { IconUserPlus } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -7,17 +8,19 @@ import { handleCreateUser } from "../../logic/api";
 import { UserRequest } from "../../logic/types";
 import Drawer from "../shared/Drawer";
 
+interface UserInputs extends Partial<UserRequest> {}
+
 export default function CreateUser() {
     const queryClient = useQueryClient();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [hasAttempted, setHasAttempted] = useState(false);
 
-    const [user, setUser] = useState<UserRequest>({
+    const [user, setUser] = useState<UserInputs>({
         alg: "ES256",
         email: "",
         first_name: "",
         surname: "",
-        dob: "",
+        dob: undefined,
         postcode: "",
         password: "",
     });
@@ -29,17 +32,17 @@ export default function CreateUser() {
         },
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (name: keyof UserRequest, value: string | DateValue) => {
         setUser({
             ...user,
-            [e.target.name]: e.target.value,
+            [name]: value,
         });
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (Object.values(user).some((value) => !value)) setHasAttempted(true);
-        else createUser(user);
+        else createUser(user as UserRequest);
     };
 
     return (
@@ -53,40 +56,52 @@ export default function CreateUser() {
                         label="Alg"
                         name="alg"
                         value={user.alg}
-                        onChange={(value: string | null) =>
-                            handleChange({ target: { name: "alg", value: value as string } } as React.ChangeEvent<HTMLInputElement>)
-                        }
+                        onChange={(value: string | null) => handleChange("alg", value as string)}
                         data={["ES256", "RS256"]}
                         allowDeselect={false}
                     />
-                    <TextInput label="Email" name="email" value={user.email} onChange={handleChange} error={hasAttempted && !user.email} />
+                    <TextInput
+                        label="Email"
+                        name="email"
+                        value={user.email}
+                        onChange={(e) => handleChange("email", e.target.value)}
+                        error={hasAttempted && !user.email}
+                        type="email"
+                    />
                     <TextInput
                         label="First Name"
                         name="first_name"
                         value={user.first_name}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange("first_name", e.target.value)}
                         error={hasAttempted && !user.first_name}
                     />
                     <TextInput
                         label="Surname"
                         name="surname"
                         value={user.surname}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange("surname", e.target.value)}
                         error={hasAttempted && !user.surname}
                     />
-                    <TextInput label="DOB" name="dob" value={user.dob} onChange={handleChange} error={hasAttempted && !user.dob} />
+                    <DateInput
+                        label="Date of Birth"
+                        placeholder="Date of Birth"
+                        value={user.dob}
+                        onChange={(value) => handleChange("dob", value)}
+                        error={hasAttempted && !user.dob}
+                        valueFormat="DD/MM/YYYY"
+                    />
                     <TextInput
                         label="Postcode"
                         name="postcode"
                         value={user.postcode}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange("postcode", e.target.value)}
                         error={hasAttempted && !user.postcode}
                     />
                     <TextInput
                         label="Password"
                         name="password"
                         value={user.password}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange("password", e.target.value)}
                         type="password"
                         error={hasAttempted && !user.password}
                     />
