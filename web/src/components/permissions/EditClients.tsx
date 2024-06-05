@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Drawer, MultiSelect, TextInput,Text, rem } from "@mantine/core";
+import { ActionIcon, Button, Drawer, MultiSelect, TextInput,Text, rem, TagsInput } from "@mantine/core";
 import { IconPencil } from "@tabler/icons-react";
 import React, { ChangeEvent, Fragment, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -64,12 +64,12 @@ const EditClient: React.FC<EditClientProps> = ({ client }) => {
                 position="right"
             >
                 <Text>ID:    {clientData.id_}</Text>
-                <TextInput label="Name" name="name" value={clientData.name} onChange={handleInputChange} required />
-                <TextInput label="Description" name="description" value={clientData.description} onChange={handleInputChange} required />
-                <TextInput label="Type" name="type" value={clientData.type} onChange={handleInputChange} required />
+                <TextInput label="Name" name="name" value={clientData.name} onChange={handleInputChange} />
+                <TextInput label="Description" name="description" value={clientData.description} onChange={handleInputChange} />
+                <TextInput label="Type" name="type" value={clientData.type} onChange={handleInputChange} />
                 <MultiSelect label="Roles" data={["admin", "standard", "readonly"]} value={clientData.roles} onChange={handleRolesChange} />
-                <MultiSelect label="Grant Types" data={['authorization_code', 'implicit',  'refresh_token']} value={clientData.grant_types} onChange={handleGrantTypesChange} />  // 'password', 'client_credentials',
-                <MultiSelect label="Redirect URIs" data={clientData.redirect_uris} value={clientData.redirect_uris} onChange={handleRedirectUrisChange} />
+                <MultiSelect label="Grant Types" data={['authorization_code', 'implicit',  'refresh_token']} value={clientData.grant_types} onChange={handleGrantTypesChange} />
+                <TagsInput label="Redirect URI's" placeholder="Enter URI" value={client.redirect_uris} onChange={handleRedirectUrisChange} />
                 <Button onClick={handleSubmit}>Save Changes</Button>
             </StyledDrawer>
         </Fragment>

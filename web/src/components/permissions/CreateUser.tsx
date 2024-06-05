@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { handleCreateUser } from "../../logic/api";
-import { UserRequest } from "../../logic/types";
+import { Roles, UserRequest } from "../../logic/types";
 import Drawer from "../shared/Drawer";
 import { format, parseISO } from "date-fns"
 interface UserInputs extends Partial<UserRequest> {}
@@ -33,7 +33,7 @@ export default function CreateUser() {
         },
     });
 
-    const handleChange = (name: keyof UserRequest, value: string | DateValue) => {
+    const handleChange = (name: keyof UserRequest, value: string | DateValue | Roles[]) => {
         if (value instanceof Date) {
             value = format(value,"yyyy-MM-dd")
         }
@@ -42,14 +42,13 @@ export default function CreateUser() {
             [name]: value,
         });
     };
-    const handleRolesChange = (roles: string[]) => {
-        setUser({ ...user, roles });
-    };
+
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (Object.values(user).some((value) => !value)) setHasAttempted(true);
         else createUser(user as UserRequest);
+        setIsDrawerOpen(false);
     };
 
     return (
@@ -112,7 +111,7 @@ export default function CreateUser() {
                         type="password"
                         error={hasAttempted && !user.password}
                     />
-                    <MultiSelect label="Roles" data={["admin", "standard", "readonly"]} value={user.roles} onChange={(roles) => handleRolesChange(roles)} />
+                    <MultiSelect label="Roles" data={["admin", "standard", "readonly"]} value={user.roles} onChange={(roles) => handleChange("roles",roles as Roles[])} />
                     <Button type="submit">Create User</Button>
                 </form>
             </Drawer>

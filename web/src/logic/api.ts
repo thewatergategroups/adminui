@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Client, Role, User, UserRequest } from "./types";
+import { Client, ClientCreateResponse, ClientRequest, Role, User, UserRequest } from "./types";
 
 export const IDENTITY_URL = "https://auth.thewatergategroups.com";
 
@@ -135,6 +135,26 @@ export async function handleCreateUser(user: UserRequest): Promise<User | null> 
 export async function handleDeleteUser(user: User): Promise<null> {
     try {
         await axios.delete(`${IDENTITY_URL}/users/user`, { withCredentials: true, params: {user_email: user.email} });
+        return null;
+    } catch (error) {
+        console.error("Error creating user:", error);
+        return null;
+    }
+}
+
+export async function handleCreateClient(client: ClientRequest): Promise<ClientCreateResponse | null> {
+    try {
+        const res = await axios.post(`${IDENTITY_URL}/clients/client`, client, { withCredentials: true });
+        return res.data;
+    } catch (error) {
+        console.error("Error creating user:", error);
+        return null;
+    }
+}
+
+export async function handleDeleteClient(client: Client): Promise<null> {
+    try {
+        await axios.delete(`${IDENTITY_URL}/clients/client`, { withCredentials: true, params: {id_: client.id_} });
         return null;
     } catch (error) {
         console.error("Error creating user:", error);

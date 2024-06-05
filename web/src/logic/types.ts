@@ -1,5 +1,7 @@
 type Alg = "ES256" | "RS256";
-
+export type GrantTypes = "authorization_code" | "implicit" | "refresh_token"
+export type Roles = "admin" | "standard" | "readonly" // should be dynamic off get roles response
+export type ClientType = "confidential"
 export interface UserRequest {
     alg: Alg;
     email: string;
@@ -9,6 +11,15 @@ export interface UserRequest {
     postcode: string;
     password: string;
     roles: string[] | undefined;
+}
+
+export interface ClientRequest {
+    name: string;
+    description: string;
+    type: ClientType;
+    grant_types: GrantTypes[];
+    redirect_uris: string[];
+    roles: Roles[];
 }
 
 export interface User {
@@ -30,6 +41,11 @@ export interface Client {
     roles: Array<string>;
     redirect_uris: Array<string>;
     grant_types: Array<string>;
+}
+
+export interface ClientCreateResponse{
+    client_id: string
+    client_secret: string
 }
 
 export interface Role {

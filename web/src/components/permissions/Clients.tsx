@@ -1,15 +1,27 @@
 import { ActionIcon, Avatar, Badge, Group, List, Table, Text, rem } from "@mantine/core";
 import {  IconTrash } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import { getClients } from "../../logic/api";
+import styled from "styled-components";
+import { getClients, handleDeleteClient } from "../../logic/api";
 import { Client } from "../../logic/types";
 import { IconUser } from "@tabler/icons-react";
 import EditClient from "./EditClients";
+import CreateClient from "./CreateClient";
+const StyledContainer = styled.div``;
+
 
 const Clients: React.FC = () => {
+    const queryClient = useQueryClient();
     const { data = [] } = useQuery({ queryFn: getClients, queryKey: ["clients"] });
     
+    const { mutate: deleteClient } = useMutation({
+        mutationFn: handleDeleteClient,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["clients"] });
+        },
+    });
+
     const displayData = data as Client[];
     const rows = displayData.map((item) => (
         <Table.Tr key={item.id_}>
@@ -78,7 +90,7 @@ const Clients: React.FC = () => {
             <Table.Td>
                 <Group gap={0} justify="flex-end">
                     <EditClient client={item} />
-                    <ActionIcon variant="subtle" color="red">
+                    <ActionIcon onClick={()=> {deleteClient(item)}} variant="subtle" color="red">
                         <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                 </Group>
@@ -87,6 +99,10 @@ const Clients: React.FC = () => {
     ));
 
     return (
+        <StyledContainer>
+        <div className="table-controls">
+            <CreateClient />
+        </div>
         <Table.ScrollContainer minWidth={800}>
             <Table verticalSpacing="sm" highlightOnHover>
                 <Table.Thead>
@@ -103,6 +119,8 @@ const Clients: React.FC = () => {
                 <Table.Tbody>{rows}</Table.Tbody>
             </Table>
         </Table.ScrollContainer>
+        </StyledContainer>
+
     );
 };
 
