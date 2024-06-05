@@ -27,7 +27,7 @@ function App() {
                 if (result) {
                     setIsLoggedIn(true);
                 } else {
-                    window.location.href = `${IDENTITY_URL}/login?redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+                    window.location.href = `${IDENTITY_URL}/login?rd=${encodeURIComponent(REDIRECT_URI)}`;
                 }
             }
         };
