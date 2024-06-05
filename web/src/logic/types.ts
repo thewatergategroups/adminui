@@ -8,6 +8,7 @@ export interface UserRequest {
     dob: string;
     postcode: string;
     password: string;
+    roles: string[] | undefined;
 }
 
 export interface User {

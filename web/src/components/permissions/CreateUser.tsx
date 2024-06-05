@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Select, TextInput } from "@mantine/core";
+import { ActionIcon, Button, MultiSelect, Select, TextInput } from "@mantine/core";
 import { DateInput, DateValue } from "@mantine/dates";
 import { IconUserPlus } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -23,6 +23,7 @@ export default function CreateUser() {
         dob: undefined,
         postcode: "",
         password: "",
+        roles: undefined
     });
 
     const { mutate: createUser, isPending: isCreatingUser } = useMutation({
@@ -40,6 +41,9 @@ export default function CreateUser() {
             ...user,
             [name]: value,
         });
+    };
+    const handleRolesChange = (roles: string[]) => {
+        setUser({ ...user, roles });
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -108,6 +112,7 @@ export default function CreateUser() {
                         type="password"
                         error={hasAttempted && !user.password}
                     />
+                    <MultiSelect label="Roles" data={["admin", "standard", "readonly"]} value={user.roles} onChange={(roles) => handleRolesChange(roles)} />
                     <Button type="submit">Create User</Button>
                 </form>
             </Drawer>

@@ -131,3 +131,13 @@ export async function handleCreateUser(user: UserRequest): Promise<User | null> 
         return null;
     }
 }
+
+export async function handleDeleteUser(user: User): Promise<null> {
+    try {
+        await axios.delete(`${IDENTITY_URL}/users/user`, { withCredentials: true, params: {user_email: user.email} });
+        return null;
+    } catch (error) {
+        console.error("Error creating user:", error);
+        return null;
+    }
+}
