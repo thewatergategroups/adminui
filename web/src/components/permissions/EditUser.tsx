@@ -4,17 +4,28 @@ import { ChangeEvent, Fragment, useState } from "react";
 import { patchUser } from "../../logic/api";
 import { User } from "../../logic/types";
 import Drawer from "../shared/Drawer";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface EditUserProps {
     user: User;
 }
 
+
+
 export default function EditUser({ user }: EditUserProps) {
+    const queryClient = useQueryClient();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [userData, setUserData] = useState<User>(user);
 
+    const { mutate: updateUser, isPending: isUpdatingUser } = useMutation({
+        mutationFn: patchUser,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["users"] });
+        },
+    });
+
     const handleSubmit = async () => {
-        await patchUser(userData);
+        await updateUser(userData);
         setIsDrawerOpen(false);
     };
 
@@ -29,7 +40,7 @@ export default function EditUser({ user }: EditUserProps) {
 
     return (
         <Fragment>
-            <ActionIcon variant="subtle" color="blue" onClick={() => setIsDrawerOpen(true)}>
+            <ActionIcon loading={isUpdatingUser} variant="subtle" color="blue" onClick={() => setIsDrawerOpen(true)}>
                 <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
             <Drawer opened={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} title="Edit User">

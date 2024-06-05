@@ -5,7 +5,7 @@ export interface UserRequest {
     email: string;
     first_name: string;
     surname: string;
-    dob: Date;
+    dob: string;
     postcode: string;
     password: string;
 }

@@ -1,14 +1,15 @@
 import { ActionIcon, Avatar, Badge, Group, List, Table, Text, rem } from "@mantine/core";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
+import {  IconTrash } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { getClients } from "../../logic/api";
 import { Client } from "../../logic/types";
 import { IconUser } from "@tabler/icons-react";
-import EditClient from "./editClients";
+import EditClient from "./EditClients";
 
 const Clients: React.FC = () => {
     const { data = [] } = useQuery({ queryFn: getClients, queryKey: ["clients"] });
+    
     const displayData = data as Client[];
     const rows = displayData.map((item) => (
         <Table.Tr key={item.id_}>

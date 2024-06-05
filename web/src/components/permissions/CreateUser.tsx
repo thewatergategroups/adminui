@@ -7,7 +7,7 @@ import { Fragment } from "react/jsx-runtime";
 import { handleCreateUser } from "../../logic/api";
 import { UserRequest } from "../../logic/types";
 import Drawer from "../shared/Drawer";
-
+import { format, parseISO } from "date-fns"
 interface UserInputs extends Partial<UserRequest> {}
 
 export default function CreateUser() {
@@ -33,6 +33,9 @@ export default function CreateUser() {
     });
 
     const handleChange = (name: keyof UserRequest, value: string | DateValue) => {
+        if (value instanceof Date) {
+            value = format(value,"yyyy-MM-dd")
+        }
         setUser({
             ...user,
             [name]: value,
@@ -85,10 +88,10 @@ export default function CreateUser() {
                     <DateInput
                         label="Date of Birth"
                         placeholder="Date of Birth"
-                        value={user.dob}
-                        onChange={(value) => handleChange("dob", value)}
+                        value={user.dob ? parseISO(user.dob) : undefined}
+                        onChange={(value:DateValue) => handleChange("dob", value)}
                         error={hasAttempted && !user.dob}
-                        valueFormat="DD/MM/YYYY"
+                        valueFormat="YYYY-MM-DD"
                     />
                     <TextInput
                         label="Postcode"

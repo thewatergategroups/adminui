@@ -1,6 +1,7 @@
 import { ActionIcon, Button, Drawer, MultiSelect, TextInput,Text, rem } from "@mantine/core";
 import { IconPencil } from "@tabler/icons-react";
 import React, { ChangeEvent, Fragment, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import styled from "styled-components";
 import { patchClient } from "../../logic/api";
 import { Client } from "../../logic/types";
@@ -16,11 +17,21 @@ interface EditClientProps {
 }
 
 const EditClient: React.FC<EditClientProps> = ({ client }) => {
+    const queryClient = useQueryClient();
+
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [clientData, setClientData] = useState<Client>(client);
+    
+    const { mutate: updateClient, isPending: isUpdatingClient } = useMutation({
+        mutationFn: patchClient,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["clients"] });
+        },
+    });
+
 
     const handleSubmit = async () => {
-        await patchClient(clientData);
+        await updateClient(clientData);
         setIsDrawerOpen(false);
     };
 
@@ -41,7 +52,7 @@ const EditClient: React.FC<EditClientProps> = ({ client }) => {
       };
     return (
         <Fragment>
-            <ActionIcon variant="subtle" color="blue" onClick={() => setIsDrawerOpen(true)}>
+            <ActionIcon loading={isUpdatingClient} variant="subtle" color="blue" onClick={() => setIsDrawerOpen(true)}>
                 <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
             <StyledDrawer
