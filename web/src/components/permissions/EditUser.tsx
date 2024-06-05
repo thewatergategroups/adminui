@@ -1,6 +1,6 @@
 import { ActionIcon, Button, MultiSelect, TextInput, rem } from "@mantine/core";
 import { IconPencil } from "@tabler/icons-react";
-import { ChangeEvent, Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 import { patchUser } from "../../logic/api";
 import { Roles, User } from "../../logic/types";
 import Drawer from "../shared/Drawer";
