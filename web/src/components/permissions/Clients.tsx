@@ -1,19 +1,17 @@
-import { ActionIcon, Avatar, Badge, Group, List, Table, Text, rem } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Group, List, Paper, Table, Text, rem } from "@mantine/core";
 import {  IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import styled from "styled-components";
-import { getClients, handleDeleteClient } from "../../logic/api";
+import { handleGetClients, handleDeleteClient } from "../../logic/api";
 import { Client } from "../../logic/types";
 import { IconUser } from "@tabler/icons-react";
 import EditClient from "./EditClients";
 import CreateClient from "./CreateClient";
-const StyledContainer = styled.div``;
 
 
 const Clients: React.FC = () => {
     const queryClient = useQueryClient();
-    const { data = [] } = useQuery({ queryFn: getClients, queryKey: ["clients"] });
+    const { data = [] } = useQuery({ queryFn: handleGetClients, queryKey: ["clients"] });
     
     const { mutate: deleteClient } = useMutation({
         mutationFn: handleDeleteClient,
@@ -99,7 +97,7 @@ const Clients: React.FC = () => {
     ));
 
     return (
-        <StyledContainer>
+        <Paper withBorder p="md" radius="md" key="Clients">
         <div className="table-controls">
             <CreateClient />
         </div>
@@ -119,7 +117,7 @@ const Clients: React.FC = () => {
                 <Table.Tbody>{rows}</Table.Tbody>
             </Table>
         </Table.ScrollContainer>
-        </StyledContainer>
+        </Paper>
 
     );
 };

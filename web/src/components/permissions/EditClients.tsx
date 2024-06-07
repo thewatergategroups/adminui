@@ -1,16 +1,12 @@
-import { ActionIcon, Button, Drawer, MultiSelect, TextInput,Text, rem, TagsInput } from "@mantine/core";
+import { ActionIcon, Button, MultiSelect, TextInput,Text, rem, TagsInput } from "@mantine/core";
 import { IconPencil } from "@tabler/icons-react";
-import React, { ChangeEvent, Fragment, useState } from "react";
+import React, {  Fragment, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import styled from "styled-components";
-import { patchClient } from "../../logic/api";
-import { Client } from "../../logic/types";
 
-const StyledDrawer = styled(Drawer)`
-    .mantine-Drawer-inner {
-        right: 0;
-    }
-`;
+import { handlePatchClient } from "../../logic/api";
+import { Client, GrantTypes, Roles } from "../../logic/types";
+import Drawer from "../shared/Drawer";
+
 
 interface EditClientProps {
     client: Client;
@@ -18,44 +14,38 @@ interface EditClientProps {
 
 const EditClient: React.FC<EditClientProps> = ({ client }) => {
     const queryClient = useQueryClient();
-
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [clientData, setClientData] = useState<Client>(client);
+    const [hasAttempted, setHasAttempted] = useState(false);
+   
     
     const { mutate: updateClient, isPending: isUpdatingClient } = useMutation({
-        mutationFn: patchClient,
+        mutationFn: handlePatchClient,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["clients"] });
         },
     });
 
 
-    const handleSubmit = async () => {
-        await updateClient(clientData);
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (Object.values(client).some((value) => !value)) setHasAttempted(true);
+        else updateClient(clientData as Client);
         setIsDrawerOpen(false);
     };
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setClientData({ ...clientData, [name]: value });
+    const handleChange = (name: keyof Client, value: string | GrantTypes[] | Roles[] | string[]) => {
+        setClientData({
+            ...clientData,
+            [name]: value,
+        });
     };
-
-    const handleRolesChange = (roles: string[]) => {
-        setClientData({ ...clientData, roles });
-    };
-    const handleRedirectUrisChange = (redirect_uris: string[]) => {
-        setClientData({ ...clientData, redirect_uris });
-      };
-    
-      const handleGrantTypesChange = (grant_types: string[]) => {
-        setClientData({ ...clientData, grant_types });
-      };
     return (
         <Fragment>
             <ActionIcon loading={isUpdatingClient} variant="subtle" color="blue" onClick={() => setIsDrawerOpen(true)}>
                 <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
-            <StyledDrawer
+            <Drawer
                 opened={isDrawerOpen}
                 onClose={() => setIsDrawerOpen(false)}
                 title="Edit Client"
@@ -63,15 +53,18 @@ const EditClient: React.FC<EditClientProps> = ({ client }) => {
                 size="md"
                 position="right"
             >
-                <Text>ID:    {clientData.id_}</Text>
-                <TextInput label="Name" name="name" value={clientData.name} onChange={handleInputChange} />
-                <TextInput label="Description" name="description" value={clientData.description} onChange={handleInputChange} />
-                <TextInput label="Type" name="type" value={clientData.type} onChange={handleInputChange} />
-                <MultiSelect label="Roles" data={["admin", "standard", "readonly"]} value={clientData.roles} onChange={handleRolesChange} />
-                <MultiSelect label="Grant Types" data={['authorization_code', 'implicit',  'refresh_token']} value={clientData.grant_types} onChange={handleGrantTypesChange} />
-                <TagsInput label="Redirect URI's" placeholder="Enter URI" value={client.redirect_uris} onChange={handleRedirectUrisChange} />
-                <Button onClick={handleSubmit}>Save Changes</Button>
-            </StyledDrawer>
+                <form onSubmit={handleSubmit}>
+
+                    <Text>ID:    {clientData.id_}</Text>
+                    <TextInput label="Name" name="name" value={clientData.name} onChange={(e) => handleChange("name", e.target.value)} />
+                    <TextInput label="Description" name="description" value={clientData.description} onChange={(e) => handleChange("description", e.target.value)} />
+                    <TextInput label="Type" name="type" value={clientData.type} onChange={(e) => handleChange("type", e.target.value)} />
+                    <MultiSelect label="Roles" data={["admin", "standard", "readonly"]} value={clientData.roles} onChange={(roles) => handleChange("roles", roles as Roles[])} />
+                    <MultiSelect label="Grant Types" data={['authorization_code', 'implicit',  'refresh_token']} value={clientData.grant_types} onChange={(grant_types) => handleChange("grant_types", grant_types as GrantTypes[])} error={hasAttempted && !clientData.grant_types} />
+                    <TagsInput label="Redirect URI's" placeholder="Enter URI" value={clientData.redirect_uris} onChange={(redirect_uris) => handleChange("redirect_uris", redirect_uris)} />
+                    <Button type="submit">Save Changes</Button>
+                </form>
+            </Drawer>
         </Fragment>
     );
 };

@@ -1,7 +1,7 @@
 import { ActionIcon, Button, MultiSelect, TextInput, rem } from "@mantine/core";
 import { IconPencil } from "@tabler/icons-react";
 import { Fragment, useState } from "react";
-import { patchUser } from "../../logic/api";
+import { handlePatchUser } from "../../logic/api";
 import { Roles, User } from "../../logic/types";
 import Drawer from "../shared/Drawer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -21,7 +21,7 @@ export default function EditUser({ user }: EditUserProps) {
     const [hasAttempted, setHasAttempted] = useState(false);
 
     const { mutate: updateUser, isPending: isUpdatingUser } = useMutation({
-        mutationFn: patchUser,
+        mutationFn: handlePatchUser,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["users"] });
         },
@@ -39,7 +39,7 @@ export default function EditUser({ user }: EditUserProps) {
             value = format(value,"yyyy-MM-dd")
         }
         setUserData({
-            ...user,
+            ...userData,
             [name]: value,
         });
     };
@@ -59,13 +59,13 @@ export default function EditUser({ user }: EditUserProps) {
                     <DateInput
                             label="Date of Birth"
                             placeholder="Date of Birth"
-                            value={user.dob ? parseISO(user.dob) : undefined}
+                            value={userData.dob ? parseISO(userData.dob) : undefined}
                             onChange={(value:DateValue)  => handleChange("dob", value)}
-                            error={hasAttempted && !user.dob}
+                            error={hasAttempted && !userData.dob}
                             valueFormat="YYYY-MM-DD"
                         />
                     <TextInput label="Postcode" name="postcode" value={userData.postcode} onChange={(e) => handleChange("postcode", e.target.value)} required />
-                    <MultiSelect label="Roles" data={["admin", "standard", "readonly"]} value={user.roles} onChange={(roles) => handleChange("roles",roles as Roles[])} />
+                    <MultiSelect label="Roles" data={["admin", "standard", "readonly"]} value={userData.roles} onChange={(roles) => handleChange("roles",roles as Roles[])} />
                     <Button type="submit">Save Changes</Button>
                 </form>
             </Drawer>

@@ -10,7 +10,7 @@ import Roles from "./components/permissions/Roles";
 import Scopes from "./components/permissions/Scopes";
 import UserInformation from "./components/permissions/UserInformation";
 import Users from "./components/permissions/Users";
-import { IDENTITY_URL, checkLoggedIn, logout } from "./logic/api";
+import { IDENTITY_URL, handleCheckLoggedIn, handleLogout } from "./logic/api";
 
 const REDIRECT_URI = `${window.location.origin}`;
 
@@ -23,7 +23,7 @@ function App() {
             if (!authCookie) {
                 window.location.href = `${IDENTITY_URL}/login?rd=${encodeURIComponent(REDIRECT_URI)}`;
             } else {
-                const result = await checkLoggedIn();
+                const result = await handleCheckLoggedIn();
                 if (result) {
                     setIsLoggedIn(true);
                 } else {
@@ -34,9 +34,9 @@ function App() {
         checkLoginStatus();
     }, []);
 
-    const handleLogout = () => {
+    const Logout = () => {
         setIsLoggedIn(false);
-        logout();
+        handleLogout();
     };
 
     return (
@@ -46,7 +46,7 @@ function App() {
                     path="/"
                     element={
                         <PrivateRoute {...{ isLoggedIn }}>
-                            <Dashboard onLogout={handleLogout}>
+                            <Dashboard onLogout={Logout}>
                                 <Outlet />
                             </Dashboard>
                         </PrivateRoute>

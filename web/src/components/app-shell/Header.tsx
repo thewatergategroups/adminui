@@ -1,6 +1,5 @@
 import { Avatar, Burger, Group, Menu, rem } from "@mantine/core";
-import { IconLogout, IconSettings, IconTrash } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+import { IconLogout } from "@tabler/icons-react";
 import styled from "styled-components";
 
 const StyledHeader = styled(Group)`
@@ -31,7 +30,7 @@ interface UserMenuProps {
 }
 
 function UserMenu({ onLogout }: UserMenuProps) {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     return (
         <Menu shadow="md" width={200}>
@@ -40,18 +39,17 @@ function UserMenu({ onLogout }: UserMenuProps) {
             </Menu.Target>
 
             <Menu.Dropdown>
-                <Menu.Label>Application</Menu.Label>
-                <Menu.Item onClick={() => navigate("/settings")} leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
+                {/* <Menu.Item onClick={() => navigate("/settings")} leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
                     Settings
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item onClick={onLogout} leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}>
                     Log Out
                 </Menu.Item>
-                <Menu.Divider />
+                {/* <Menu.Divider />
                 <Menu.Label>Danger zone</Menu.Label>
                 <Menu.Item color="red" leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}>
                     Delete my account
-                </Menu.Item>
+                </Menu.Item> */}
             </Menu.Dropdown>
         </Menu>
     );

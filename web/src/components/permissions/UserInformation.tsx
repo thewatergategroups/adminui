@@ -1,8 +1,8 @@
-import { Avatar, Badge, Card, Container, Group, Text, Title } from "@mantine/core";
+import { Avatar, Badge, Card, Container, Group, Stack, Text, Title } from "@mantine/core";
 import { IconUser } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import { getSelfUser } from "../../logic/api";
+import React, { Fragment } from "react";
+import { handleGetSelfUser } from "../../logic/api";
 import { User } from "../../logic/types";
 
 const FALLBACK_USER: User = {
@@ -17,29 +17,29 @@ const FALLBACK_USER: User = {
 };
 
 const UserInformation: React.FC = () => {
-    const { data: user } = useQuery({ queryFn: getSelfUser, queryKey: ["user"], initialData: FALLBACK_USER });
+    const { data: user } = useQuery({ queryFn: handleGetSelfUser, queryKey: ["user"], initialData: FALLBACK_USER });
 
     return (
-        <Container size="sm" px="md" py="md">
+        <Fragment>
             {user && (
-                <Card shadow="sm" padding="lg" radius="md" withBorder>
+                <Card>
                     <Group style={{ marginBottom: 10 }}>
                         <Group>
-                            <Avatar radius="xl" size="lg" color="blue">
-                                <IconUser size={40} />
-                            </Avatar>
                             <div>
                                 <Title order={2}>{`${user.first_name} ${user.surname}`}</Title>
                                 <Text c="dimmed">{user.email}</Text>
                             </div>
+                            <Avatar radius="xl" size="lg" color="blue">
+                                <IconUser size={40} />
+                            </Avatar>
                         </Group>
                     </Group>
 
-                    <Group align="flex-start">
+                    <Stack align="flex-start" gap={0}>
                         <Text>Date of Birth: {new Date(user.dob).toDateString()}</Text>
                         <Text>Postcode: {user.postcode}</Text>
                         <Text>Account Created: {new Date(user.created_at)?.toDateString()}</Text>
-                    </Group>
+                    </Stack>
 
                     <Group style={{ marginTop: 20 }}>
                         {user.roles.map((role, index) => (
@@ -50,7 +50,7 @@ const UserInformation: React.FC = () => {
                     </Group>
                 </Card>
             )}
-        </Container>
+        </Fragment>
     );
 };
 

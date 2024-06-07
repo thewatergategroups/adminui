@@ -47,7 +47,7 @@ export default function Navbar({ onLogout }: NavbarProps) {
         {
             label: "Identity",
             icon: <IconUsers size="1rem" stroke={1.5} />,
-            active: isActiveTab("/users") || isActiveTab("/users/me") || isActiveTab("/users/"),
+            active: isActiveTab("/users") || isActiveTab("/users/"),
             children: [
                 {
                     href: "/users",
@@ -73,12 +73,6 @@ export default function Navbar({ onLogout }: NavbarProps) {
                     icon: <IconUsersGroup size="1rem" stroke={1.5} />,
                     active: isActiveTab("/clients"),
                 },
-                {
-                    href: "/users/me",
-                    label: "Me",
-                    icon: <IconUserSquareRounded size="1rem" stroke={1.5} />,
-                    active: isActiveTab("/users/me"),
-                },
                 ...(isOnUserPage
                     ? [
                           {
@@ -91,7 +85,7 @@ export default function Navbar({ onLogout }: NavbarProps) {
                     : []),
             ],
         },
-        { href: "/settings", label: "Settings", icon: <IconSettings size="1rem" stroke={1.5} />, active: isActiveTab("/settings") },
+        // { href: "/settings", label: "Settings", icon: <IconSettings size="1rem" stroke={1.5} />, active: isActiveTab("/settings") },
     ] as NavItem[];
 
     return (
