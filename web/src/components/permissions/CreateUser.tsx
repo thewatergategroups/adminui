@@ -2,12 +2,12 @@ import { ActionIcon, Button, MultiSelect, Select, TextInput } from "@mantine/cor
 import { DateInput, DateValue } from "@mantine/dates";
 import { IconUserPlus } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { format, parseISO } from "date-fns";
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { handleCreateUser } from "../../logic/api";
 import { Roles, UserRequest } from "../../logic/types";
 import Drawer from "../shared/Drawer";
-import { format, parseISO } from "date-fns"
 interface UserInputs extends Partial<UserRequest> {}
 
 export default function CreateUser() {
@@ -23,7 +23,7 @@ export default function CreateUser() {
         dob: undefined,
         postcode: "",
         password: "",
-        roles: undefined
+        roles: undefined,
     });
 
     const { mutate: createUser, isPending: isCreatingUser } = useMutation({
@@ -35,14 +35,13 @@ export default function CreateUser() {
 
     const handleChange = (name: keyof UserRequest, value: string | DateValue | Roles[]) => {
         if (value instanceof Date) {
-            value = format(value,"yyyy-MM-dd")
+            value = format(value, "yyyy-MM-dd");
         }
         setUser({
             ...user,
             [name]: value,
         });
     };
-
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -59,6 +58,7 @@ export default function CreateUser() {
             <Drawer opened={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} title="Create User">
                 <form onSubmit={handleSubmit}>
                     <Select
+                        required
                         label="Alg"
                         name="alg"
                         value={user.alg}
@@ -67,6 +67,7 @@ export default function CreateUser() {
                         allowDeselect={false}
                     />
                     <TextInput
+                        required
                         label="Email"
                         name="email"
                         value={user.email}
@@ -75,6 +76,7 @@ export default function CreateUser() {
                         type="email"
                     />
                     <TextInput
+                        required
                         label="First Name"
                         name="first_name"
                         value={user.first_name}
@@ -82,6 +84,7 @@ export default function CreateUser() {
                         error={hasAttempted && !user.first_name}
                     />
                     <TextInput
+                        required
                         label="Surname"
                         name="surname"
                         value={user.surname}
@@ -89,14 +92,16 @@ export default function CreateUser() {
                         error={hasAttempted && !user.surname}
                     />
                     <DateInput
+                        required
                         label="Date of Birth"
                         placeholder="Date of Birth"
                         value={user.dob ? parseISO(user.dob) : undefined}
-                        onChange={(value:DateValue) => handleChange("dob", value)}
+                        onChange={(value: DateValue) => handleChange("dob", value)}
                         error={hasAttempted && !user.dob}
                         valueFormat="YYYY-MM-DD"
                     />
                     <TextInput
+                        required
                         label="Postcode"
                         name="postcode"
                         value={user.postcode}
@@ -104,6 +109,7 @@ export default function CreateUser() {
                         error={hasAttempted && !user.postcode}
                     />
                     <TextInput
+                        required
                         label="Password"
                         name="password"
                         value={user.password}
@@ -111,7 +117,13 @@ export default function CreateUser() {
                         type="password"
                         error={hasAttempted && !user.password}
                     />
-                    <MultiSelect label="Roles" data={["admin", "standard", "readonly"]} value={user.roles} onChange={(roles) => handleChange("roles",roles as Roles[])} />
+                    <MultiSelect
+                        required
+                        label="Roles"
+                        data={["admin", "standard", "readonly"]}
+                        value={user.roles}
+                        onChange={(roles) => handleChange("roles", roles as Roles[])}
+                    />
                     <Button type="submit">Create User</Button>
                 </form>
             </Drawer>

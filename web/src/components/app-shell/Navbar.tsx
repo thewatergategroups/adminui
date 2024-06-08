@@ -1,5 +1,5 @@
 import { Button, NavLink } from "@mantine/core";
-import { IconLayoutDashboard, IconLogout, IconUsers, IconUsersGroup } from "@tabler/icons-react";
+import { IconArrowBadgeDown, IconBadges, IconLayoutDashboard, IconLogout, IconUsers, IconUsersGroup } from "@tabler/icons-react";
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -42,13 +42,13 @@ export default function Navbar({ onLogout }: NavbarProps) {
         {
             href: "/roles",
             label: "Roles",
-            icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+            icon: <IconBadges size="1rem" stroke={1.5} />,
             active: isActiveTab("/roles"),
         },
         {
             href: "/scopes",
             label: "Scopes",
-            icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+            icon: <IconArrowBadgeDown size="1rem" stroke={1.5} />,
             active: isActiveTab("/scopes"),
         },
         {
