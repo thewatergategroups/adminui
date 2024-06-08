@@ -1,11 +1,5 @@
 import { Button, NavLink } from "@mantine/core";
-import {
-    IconLayoutDashboard,
-    IconLogout,
-    IconUserSearch,
-    IconUsers,
-    IconUsersGroup,
-} from "@tabler/icons-react";
+import { IconLayoutDashboard, IconLogout, IconUsers, IconUsersGroup } from "@tabler/icons-react";
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -37,53 +31,43 @@ export default function Navbar({ onLogout }: NavbarProps) {
     const location = useLocation();
     const navigate = useNavigate();
     const isActiveTab = (href: string) => matchPath({ path: location.pathname }, href) !== null;
-    const isOnUserPage = matchPath({ path: location.pathname }, "/users/:userId") !== null;
-    const userId = isOnUserPage ? matchPath({ path: location.pathname }, "/users/:userId")?.params.userId : "";
+
+    const identityChildren = [
+        {
+            href: "/users",
+            label: "Users",
+            icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+            active: isActiveTab("/users"),
+        },
+        {
+            href: "/roles",
+            label: "Roles",
+            icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+            active: isActiveTab("/roles"),
+        },
+        {
+            href: "/scopes",
+            label: "Scopes",
+            icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+            active: isActiveTab("/scopes"),
+        },
+        {
+            href: "/clients",
+            label: "Clients",
+            icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+            active: isActiveTab("/clients"),
+        },
+    ];
 
     const navItems = [
         { href: "/", label: "Dashboard", icon: <IconLayoutDashboard size="1rem" stroke={1.5} />, active: isActiveTab("/") },
         {
             label: "Identity",
             icon: <IconUsers size="1rem" stroke={1.5} />,
-            active: isActiveTab("/users") || isActiveTab("/users/"),
-            children: [
-                {
-                    href: "/users",
-                    label: "Users",
-                    icon: <IconUsersGroup size="1rem" stroke={1.5} />,
-                    active: isActiveTab("/users"),
-                },
-                {
-                    href: "/roles",
-                    label: "Roles",
-                    icon: <IconUsersGroup size="1rem" stroke={1.5} />,
-                    active: isActiveTab("/roles"),
-                },
-                {
-                    href: "/scopes",
-                    label: "Scopes",
-                    icon: <IconUsersGroup size="1rem" stroke={1.5} />,
-                    active: isActiveTab("/scopes"),
-                },
-                {
-                    href: "/clients",
-                    label: "Clients",
-                    icon: <IconUsersGroup size="1rem" stroke={1.5} />,
-                    active: isActiveTab("/clients"),
-                },
-                ...(isOnUserPage
-                    ? [
-                          {
-                              href: `/users/${userId}`,
-                              label: "Selected User",
-                              icon: <IconUserSearch size="1rem" stroke={1.5} />,
-                              active: isActiveTab("/users/"),
-                          },
-                      ]
-                    : []),
-            ],
+            active: identityChildren.some((child) => isActiveTab(child.href)),
+            children: identityChildren,
         },
-        // { href: "/settings", label: "Settings", icon: <IconSettings size="1rem" stroke={1.5} />, active: isActiveTab("/settings") },
+        // Add more nav items here if needed
     ] as NavItem[];
 
     return (
