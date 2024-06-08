@@ -1,4 +1,4 @@
-import { Avatar, Badge, Card, Container, Group, Stack, Text, Title } from "@mantine/core";
+import { Avatar, Badge, Card, Group, Stack, Text, Title } from "@mantine/core";
 import { IconUser } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import React, { Fragment } from "react";

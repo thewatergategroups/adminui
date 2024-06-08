@@ -2,9 +2,7 @@ import { Button, NavLink } from "@mantine/core";
 import {
     IconLayoutDashboard,
     IconLogout,
-    IconSettings,
     IconUserSearch,
-    IconUserSquareRounded,
     IconUsers,
     IconUsersGroup,
 } from "@tabler/icons-react";
