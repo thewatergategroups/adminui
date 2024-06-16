@@ -2,6 +2,23 @@ type Alg = "ES256" | "RS256";
 export type GrantTypes = "authorization_code" | "implicit" | "refresh_token"
 export type Roles = "admin" | "standard" | "readonly" // should be dynamic off get roles response
 export type ClientType = "confidential"
+export type ParameterType = "SecureString" | "String" | "StringList" 
+export interface Parameter {
+    Name: string;
+    Type: ParameterType;
+    Value: string;
+    Version: number;
+    LastModifiedDate: string;
+    DataType: string;
+    Description: string;
+}
+
+export interface ParameterRequest {
+    name: string;
+    type_: ParameterType;
+    description: string;
+    value: string;
+}
 export interface UserRequest {
     alg: Alg;
     email: string;

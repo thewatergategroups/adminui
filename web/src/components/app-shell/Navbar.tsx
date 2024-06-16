@@ -67,7 +67,20 @@ export default function Navbar({ onLogout }: NavbarProps) {
             active: identityChildren.some((child) => isActiveTab(child.href)),
             children: identityChildren,
         },
-        // Add more nav items here if needed
+        {
+            label: "Secrets",
+            icon: <IconUsers size="1rem" stroke={1.5} />,
+            active: isActiveTab("/secrets") || isActiveTab("/users/"),
+            children: [
+                {
+                    href: "/secrets",
+                    label: "Parameters",
+                    icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+                    active: isActiveTab("/secrets"),
+                }
+            ],
+        },
+        // { href: "/settings", label: "Settings", icon: <IconSettings size="1rem" stroke={1.5} />, active: isActiveTab("/settings") },
     ] as NavItem[];
 
     return (
