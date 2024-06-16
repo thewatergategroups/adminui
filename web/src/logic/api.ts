@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Client, ClientCreateResponse, ClientRequest, Role, Scope, User, UserRequest } from "./types";
+import { Client, ClientCreateResponse, ClientRequest, Role, Scope, User, UserRequest, Parameter, ParameterRequest } from "./types";
 
 export const IDENTITY_URL = "https://auth.thewatergategroups.com";
 
@@ -204,7 +204,7 @@ export async function handleGetSelfUser(): Promise<User | null> {
 export async function handleLogout(): Promise<void | null> {
     try {
         await axios.post(`${IDENTITY_URL}/logout`, { withCredentials: true });
-        Cookies.remove("session_id");
+        Cookies.remove("oauth2-session");
         console.log("Logout successful");
     } catch (error) {
         console.error("Logout failed:", error);
@@ -222,5 +222,45 @@ export async function handleCheckLoggedIn(): Promise<void | boolean> {
     } catch (error) {
         console.error("Logout failed:", error);
         return false;
+    }
+}
+
+export const AWS_RESOURCE_MANAGER_URL = "https://resource.thewatergategroups.com"
+
+export async function handleGetParameters(): Promise<Parameter[] | null> {
+    try {
+        const resp = await axios.get(`${AWS_RESOURCE_MANAGER_URL}/parameters`);
+        if (resp.status !== 200) {
+            return null;
+        }
+        return resp.data;
+    } catch (error) {
+        console.error("Logout failed:", error);
+        return null;
+    }
+}
+
+export async function handleDeleteParameter(param: Parameter): Promise<null> {
+    try {
+        await axios.delete(`${AWS_RESOURCE_MANAGER_URL}/parameters/parameter`, { withCredentials: true, params: {name: param.Name} });
+        return null;
+    } catch (error) {
+        console.error("Error deleting parameter:", error);
+        return null;
+    }
+}
+
+export async function handleCreateUpdateParameter(parameter: ParameterRequest): Promise<null> {
+    try {
+        const res = await axios.post(`${AWS_RESOURCE_MANAGER_URL}/parameters/parameter`,  {
+            name: parameter.name,
+            description: parameter.description,
+            type_: parameter.type_,
+            value: JSON.parse(parameter.value)  
+        }, { withCredentials: true});
+        return res.data;
+    } catch (error) {
+        console.error("Error creating parameter:", error);
+        return null;
     }
 }
