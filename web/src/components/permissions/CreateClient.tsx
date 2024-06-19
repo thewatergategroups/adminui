@@ -47,6 +47,7 @@ export default function CreateClient() {
         e.preventDefault();
         if (Object.values(client).some((value) => !value)) setHasAttempted(true);
         else createClient(client as ClientRequest);
+        setIsDrawerOpen(false)
     };
 
     return (

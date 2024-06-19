@@ -1,18 +1,33 @@
 import { ActionIcon, Avatar, Badge, Group, List, Paper, Table, Text, rem } from "@mantine/core";
 import {  IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { handleGetClients, handleDeleteClient } from "../../logic/api";
 import { Client } from "../../logic/types";
 import { IconUser } from "@tabler/icons-react";
 import EditClient from "./EditClients";
 import CreateClient from "./CreateClient";
+import ConfirmDeleteModal from "../shared/ConfirmDeleteModal";
 
 
 const Clients: React.FC = () => {
     const queryClient = useQueryClient();
     const { data = [] } = useQuery({ queryFn: handleGetClients, queryKey: ["clients"] });
+    const [modalOpened, setModalOpened] = useState(false);
+    const [selectedClient, setSelectedClient] = useState<Client | null>(null);
     
+    const handleDeleteClick = (item: Client) => {
+        setSelectedClient(item);
+        setModalOpened(true);
+      };
+    
+      const confirmDelete = () => {
+        if (selectedClient) {
+          deleteClient(selectedClient);
+        }
+        setModalOpened(false);
+      };
+
     const { mutate: deleteClient } = useMutation({
         mutationFn: handleDeleteClient,
         onSuccess: () => {
@@ -88,7 +103,7 @@ const Clients: React.FC = () => {
             <Table.Td>
                 <Group gap={0} justify="flex-end">
                     <EditClient client={item} />
-                    <ActionIcon onClick={()=> {deleteClient(item)}} variant="subtle" color="red">
+                    <ActionIcon onClick={()=> {handleDeleteClick(item)}} variant="subtle" color="red">
                         <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                 </Group>
@@ -117,6 +132,11 @@ const Clients: React.FC = () => {
                 <Table.Tbody>{rows}</Table.Tbody>
             </Table>
         </Table.ScrollContainer>
+        <ConfirmDeleteModal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        onConfirm={confirmDelete}
+        />
         </Paper>
 
     );

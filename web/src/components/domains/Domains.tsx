@@ -1,11 +1,13 @@
 import {  ActionIcon, Group, Paper, Table, Text, rem } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { handleGetDomains, handleDeleteDomain } from "../../logic/api";
 import { Domain, DomainRequest } from "../../logic/types";
 import { IconTrash } from "@tabler/icons-react";
 import EditDomain from "./EditDomains";
 import CreateDomain from "./CreateDomains";
+import ConfirmDeleteModal from '../shared/ConfirmDeleteModal'; 
+
 
 function convertDomainToRequest(domain: Domain): DomainRequest {
     return {
@@ -20,6 +22,10 @@ const Domains: React.FC = () => {
     const queryClient = useQueryClient();
     const { data = [] } = useQuery({ queryFn: handleGetDomains, queryKey: ["domains"] });
     
+    const [modalOpened, setModalOpened] = useState(false);
+    const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
+
+
     const { mutate: deleteDomain } = useMutation({
         mutationFn: handleDeleteDomain,
         onSuccess: () => {
@@ -27,6 +33,19 @@ const Domains: React.FC = () => {
         },
     });
     
+    const handleDeleteClick = (item: Domain) => {
+        setSelectedDomain(item);
+        setModalOpened(true);
+      };
+    
+      const confirmDelete = () => {
+        if (selectedDomain) {
+          deleteDomain(selectedDomain);
+        }
+        setModalOpened(false);
+      };
+
+
     const displayData = data as Domain[];
     const rows = displayData.map((item) => (
         <Table.Tr key={item.Name}>
@@ -50,7 +69,7 @@ const Domains: React.FC = () => {
                 {item.Type === 'CNAME' && (
                     <>
                     <EditDomain domain={convertDomainToRequest(item)} />
-                    <ActionIcon onClick={() => deleteDomain(item)} variant="subtle" color="red">
+                    <ActionIcon onClick={() => handleDeleteClick(item)} variant="subtle" color="red">
                         <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                     </>
@@ -77,6 +96,11 @@ const Domains: React.FC = () => {
                 <Table.Tbody>{rows}</Table.Tbody>
             </Table>
         </Table.ScrollContainer>
+        <ConfirmDeleteModal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        onConfirm={confirmDelete}
+        />
         </Paper>
 
     );

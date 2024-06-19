@@ -1,16 +1,31 @@
 import { ActionIcon, Anchor, Avatar, Badge, Group, List, Paper, Table, Text, rem } from "@mantine/core";
 import { IconTrash, IconUser } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { handleGetUsers, handleDeleteUser } from "../../logic/api";
 import { User } from "../../logic/types";
 import CreateUser from "./CreateUser";
 import EditUser from "./EditUser";
+import ConfirmDeleteModal from "../shared/ConfirmDeleteModal";
 
 
 const Users: React.FC = () => {
     const queryClient = useQueryClient();
+    const [modalOpened, setModalOpened] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
     
+    const handleDeleteClick = (item: User) => {
+        setSelectedUser(item);
+        setModalOpened(true);
+      };
+    
+      const confirmDelete = () => {
+        if (selectedUser) {
+          deleteUser(selectedUser);
+        }
+        setModalOpened(false);
+      };
+
     const { mutate: deleteUser } = useMutation({
         mutationFn: handleDeleteUser,
         onSuccess: () => {
@@ -63,7 +78,7 @@ const Users: React.FC = () => {
             <Table.Td>
                 <Group gap={0} justify="flex-end">
                     <EditUser user={item} />
-                    <ActionIcon onClick={()=> {deleteUser(item)}} variant="subtle" color="red">
+                    <ActionIcon onClick={()=> {handleDeleteClick(item)}} variant="subtle" color="red">
                         <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                 </Group>
@@ -90,6 +105,11 @@ const Users: React.FC = () => {
                     <Table.Tbody>{rows}</Table.Tbody>
                 </Table>
             </Table.ScrollContainer>
+            <ConfirmDeleteModal
+            opened={modalOpened}
+            onClose={() => setModalOpened(false)}
+            onConfirm={confirmDelete}
+            />
             </Paper>
     );
 };

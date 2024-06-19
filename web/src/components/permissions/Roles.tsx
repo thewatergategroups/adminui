@@ -5,11 +5,31 @@ import { Role } from "../../logic/types";
 import CreateRole from "./CreateRole"
 import EditRole from "./EditRole";
 import { IconTrash } from "@tabler/icons-react";
+import ConfirmDeleteModal from "../shared/ConfirmDeleteModal";
+import { useState } from "react";
+
+
 const Roles: React.FC = () => {
     const queryClient = useQueryClient();
 
     const { data = [] } = useQuery({ queryFn: handleGetRoles, queryKey: ["roles"] });
     const displayData = data as Role[];
+
+    const [modalOpened, setModalOpened] = useState(false);
+    const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+    
+    const handleDeleteClick = (item: Role) => {
+        setSelectedRole(item);
+        setModalOpened(true);
+      };
+    
+      const confirmDelete = () => {
+        if (selectedRole) {
+          deleteRole(selectedRole);
+        }
+        setModalOpened(false);
+      };
+
     const { mutate: deleteRole } = useMutation({
         mutationFn: handleDeleteRole,
         onSuccess: () => {
@@ -28,7 +48,7 @@ const Roles: React.FC = () => {
                         <Text>{role.id_}</Text>
                         <Group>
                         <EditRole role={role} />
-                        <ActionIcon onClick={()=> {deleteRole(role)}} variant="subtle" color="red">
+                        <ActionIcon onClick={()=> {handleDeleteClick(role)}} variant="subtle" color="red">
                                 <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                         </ActionIcon>
                         </Group>
@@ -43,6 +63,11 @@ const Roles: React.FC = () => {
                 </Card>
             ))}
         </Group>
+        <ConfirmDeleteModal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        onConfirm={confirmDelete}
+        />
         </Paper>
     );
 };

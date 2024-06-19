@@ -42,7 +42,7 @@ const Roles: React.FC = () => {
             <ActionIcon loading={isCreatingRole} loaderProps={{ type: "dots" }} onClick={() => setIsDrawerOpen(true)}>
                 <IconUserPlus />
             </ActionIcon>
-            <Drawer opened={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} title="Create Scope">
+            <Drawer opened={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} title="Create Role">
                 <form onSubmit={handleSubmit}>
                     <TextInput
                         label="ID"
