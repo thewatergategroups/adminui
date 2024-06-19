@@ -7,6 +7,8 @@ import { User } from "../../logic/types";
 import CreateUser from "./CreateUser";
 import EditUser from "./EditUser";
 import ConfirmDeleteModal from "../shared/ConfirmDeleteModal";
+import { useAppContext } from "../AppContext";
+import {InvisibleUserInfo} from "./UserInformation";
 
 
 const Users: React.FC = () => {
@@ -34,9 +36,9 @@ const Users: React.FC = () => {
     });
     
     const { data = [] } = useQuery({ queryFn: handleGetUsers, queryKey: ["users"] });
-
+    const { userMe } = useAppContext();
     const displayData = data as User[];
-
+    
     const rows = displayData.map((item) => (
         <Table.Tr key={item.id_}>
             <Table.Td>
@@ -78,16 +80,20 @@ const Users: React.FC = () => {
             <Table.Td>
                 <Group gap={0} justify="flex-end">
                     <EditUser user={item} />
+                    {item.email !== userMe && (
                     <ActionIcon onClick={()=> {handleDeleteClick(item)}} variant="subtle" color="red">
                         <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
+                    )}
                 </Group>
             </Table.Td>
         </Table.Tr>
     ));
 
     return (
+        
         <Paper withBorder p="md" radius="md" key="Users">
+        <InvisibleUserInfo/>
             <div className="table-controls">
                 <CreateUser />
             </div>

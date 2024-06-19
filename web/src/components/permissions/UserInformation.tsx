@@ -4,8 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import React, { Fragment } from "react";
 import { handleGetSelfUser } from "../../logic/api";
 import { User } from "../../logic/types";
+import { useAppContext } from "../AppContext";
 
-const FALLBACK_USER: User = {
+export const FALLBACK_USER: User = {
     id_: "1",
     email: "john.doe@example.com",
     first_name: "John",
@@ -16,8 +17,21 @@ const FALLBACK_USER: User = {
     roles: ["admin"],
 };
 
+export const InvisibleUserInfo: React.FC = () => {
+    const { data: user } = useQuery({ queryFn: handleGetSelfUser, queryKey: ["user"], initialData: FALLBACK_USER });
+    const { setUserMe } = useAppContext();
+    if (user !==null){
+        setUserMe(user.email)
+    }
+    return null
+}
+
 const UserInformation: React.FC = () => {
     const { data: user } = useQuery({ queryFn: handleGetSelfUser, queryKey: ["user"], initialData: FALLBACK_USER });
+    const { setUserMe } = useAppContext();
+    if (user !==null){
+        setUserMe(user.email)
+    }
 
     return (
         <Fragment>
