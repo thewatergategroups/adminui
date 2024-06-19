@@ -80,6 +80,19 @@ export default function Navbar({ onLogout }: NavbarProps) {
                 }
             ],
         },
+        {
+            label: "Domains",
+            icon: <IconUsers size="1rem" stroke={1.5} />,
+            active: isActiveTab("/domains") || isActiveTab("/users/"),
+            children: [
+                {
+                    href: "/domains",
+                    label: "Record Sets",
+                    icon: <IconUsersGroup size="1rem" stroke={1.5} />,
+                    active: isActiveTab("/domains"),
+                }
+            ],
+        }
         // { href: "/settings", label: "Settings", icon: <IconSettings size="1rem" stroke={1.5} />, active: isActiveTab("/settings") },
     ] as NavItem[];
 

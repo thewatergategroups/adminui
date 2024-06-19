@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Client, ClientCreateResponse, ClientRequest, Role, Scope, User, UserRequest, Parameter, ParameterRequest } from "./types";
+import { Client, ClientCreateResponse, ClientRequest, Role, Scope, User, UserRequest, Parameter, ParameterRequest,Domain,DomainRequest } from "./types";
 
 export const IDENTITY_URL = "https://auth.thewatergategroups.com";
 
@@ -261,6 +261,41 @@ export async function handleCreateUpdateParameter(parameter: ParameterRequest): 
         return res.data;
     } catch (error) {
         console.error("Error creating parameter:", error);
+        return null;
+    }
+}
+
+
+
+export async function handleGetDomains(): Promise<Domain[] | null> {
+    try {
+        const resp = await axios.get(`${AWS_RESOURCE_MANAGER_URL}/domains/record-sets`);
+        if (resp.status !== 200) {
+            return null;
+        }
+        return resp.data;
+    } catch (error) {
+        console.error("Logout failed:", error);
+        return null;
+    }
+}
+
+export async function handleDeleteDomain(domain: Domain): Promise<null> {
+    try {
+        await axios.delete(`${AWS_RESOURCE_MANAGER_URL}/domains/record-set`, { withCredentials: true, params: {name: domain.Name, type_: domain.Type, ttl:domain.TTL} });
+        return null;
+    } catch (error) {
+        console.error("Error deleting record set:", error);
+        return null;
+    }
+}
+
+export async function handleCreateUpdateDomain(domain: DomainRequest): Promise<null> {
+    try {
+        const res = await axios.post(`${AWS_RESOURCE_MANAGER_URL}/domains/record-set`,  domain, { withCredentials: true});
+        return res.data;
+    } catch (error) {
+        console.error("Error creating record set:", error);
         return null;
     }
 }

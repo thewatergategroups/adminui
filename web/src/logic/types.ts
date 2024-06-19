@@ -3,6 +3,7 @@ export type GrantTypes = "authorization_code" | "implicit" | "refresh_token"
 export type Roles = "admin" | "standard" | "readonly" // should be dynamic off get roles response
 export type ClientType = "confidential"
 export type ParameterType = "SecureString" | "String" | "StringList" 
+export type DomainType = "CNAME" | "A"
 export interface Parameter {
     Name: string;
     Type: ParameterType;
@@ -18,6 +19,18 @@ export interface ParameterRequest {
     type_: ParameterType;
     description: string;
     value: string;
+}
+
+export interface Domain {
+    Name: string;
+    Type: DomainType;
+    TTL: number
+}
+
+export interface DomainRequest {
+    name: string;
+    type_: DomainType;
+    ttl: number
 }
 export interface UserRequest {
     alg: Alg;

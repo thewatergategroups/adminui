@@ -1,11 +1,11 @@
-import {  ActionIcon, Avatar, Group, JsonInput, Paper, Table, Text, rem } from "@mantine/core";
+import {  ActionIcon, Group, JsonInput, Paper, Table, Text, rem } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { handleGetParameters, handleDeleteParameter } from "../../logic/api";
 import { Parameter, ParameterRequest } from "../../logic/types";
-import { IconTrash, IconUser } from "@tabler/icons-react";
+import { IconTrash } from "@tabler/icons-react";
 import EditParameter from "./EditParameter";
-import CreateClient from "./CreateParameter";
+import CreateParameter from "./CreateParameter";
 
 function convertParameterToRequest(parameter: Parameter): ParameterRequest {
     return {
@@ -33,13 +33,7 @@ const Parameters: React.FC = () => {
     
     const displayData = data as Parameter[];
     const rows = displayData.map((item) => (
-        <Table.Tr key={item.Name}>
-                        
-            <Table.Td>
-                <Avatar radius="xl" size="lg" color="blue">
-                    <IconUser size={40} />
-                </Avatar>
-            </Table.Td>
+        <Table.Tr key={item.Name}>          
             <Table.Td>
             <Group gap="sm">
                     <div>
@@ -90,13 +84,12 @@ const Parameters: React.FC = () => {
     return (
         <Paper withBorder p="md" radius="md" key="Parameters">
         <div className="table-controls">
-            <CreateClient />
+            <CreateParameter />
         </div>
         <Table.ScrollContainer minWidth={800}>
             <Table verticalSpacing="md" highlightOnHover>
                 <Table.Thead>
                     <Table.Tr>
-                        <Table.Th></Table.Th>
                         <Table.Th>Name</Table.Th>
                         <Table.Th>Type</Table.Th>
                         <Table.Th>Value</Table.Th>

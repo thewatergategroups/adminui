@@ -12,6 +12,7 @@ import Scopes from "./components/permissions/Scopes";
 import Users from "./components/permissions/Users";
 import {  handleCheckLoggedIn, handleLogout, IDENTITY_URL } from "./logic/api";
 import Parameters from "./components/secrets/Parameters";
+import Domains from "./components/domains/Domains";
 
 const REDIRECT_URI = `${window.location.origin}`;
 
@@ -57,6 +58,7 @@ function App() {
                 >
                     <Route index element={<Landing />} />
                     <Route path="secrets" element={<Parameters />} />
+                    <Route path="domains" element={<Domains />} />
                     <Route path="users" element={<Users />} />
                     <Route path="clients" element={<Clients />} />
                     <Route path="roles" element={<Roles />} />

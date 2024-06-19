@@ -8,7 +8,7 @@ import { ParameterRequest, ParameterType } from "../../logic/types";
 import Drawer from "../shared/Drawer";
 import { prettifyJson } from "./Parameters";
 
-export default function CreateClient() {
+export default function CreateParameter() {
     const queryClient = useQueryClient();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [hasAttempted, setHasAttempted] = useState(false);
