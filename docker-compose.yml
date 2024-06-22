@@ -1,6 +1,6 @@
 services:
-  authui: 
-    image: ghcr.io/thewatergategroups/authui:latest
+  adminui: 
+    image: ghcr.io/thewatergategroups/adminui:latest
     volumes:
       - ./web:/app
     network_mode: host

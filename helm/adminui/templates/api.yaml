@@ -3,24 +3,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: authui
+  name: adminui
   namespace: {{ $.Release.Namespace }}
   labels: {}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: authui
+      app: adminui
   template:
     metadata:
       labels:
-        app: authui
+        app: adminui
     spec:
       securityContext: {}
       imagePullSecrets:
         - name: {{ .Values.regCredName }} 
       containers:
-        - name: authui
+        - name: adminui
           securityContext: null
           image: {{ .Values.imageName }}
           imagePullPolicy: Always
@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: authui
+  name: adminui
   namespace: {{ $.Release.Namespace }}
   labels: {}
 spec:
@@ -52,4 +52,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: authui
+    app: adminui

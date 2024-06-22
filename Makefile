@@ -1,4 +1,4 @@
-REPOSITORY := authui
+REPOSITORY := adminui
 
 build:
 	docker build --network=host \
@@ -6,7 +6,7 @@ build:
 	. -t ghcr.io/thewatergategroups/$(REPOSITORY):latest
 
 dev:
-	devspace sync --upload-only --namespace apps --container authui
+	devspace sync --upload-only --namespace apps --container adminui
 
 up: 
 	docker compose up -d --remove-orphans
