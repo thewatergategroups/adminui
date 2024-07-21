@@ -17,7 +17,10 @@ function convertParameterToRequest(parameter: Parameter): ParameterRequest {
     };
 }
 
-export function prettifyJson(value: string):string{
+export function prettifyJson(value: string | undefined):string{
+    if (value === undefined){
+        return ""
+    }
     try{
         return JSON.stringify(JSON.parse(value),null,2)
     } catch{

@@ -129,10 +129,11 @@ export interface Position {
     total_positions_held: number;
     starting_buying_power: number;
   }
+export type ConditionType = "and" | "or"
   
   export interface StrategyCondition {
     name: string;
-    type: string;
+    type: ConditionType;
     active: boolean;
     variables: {
       [key: string]: number;
@@ -193,4 +194,13 @@ export interface BacktestDataItem {
   buys: number;
   sells: number;
   timestamp: string;
+}
+
+
+
+export interface BacktestRequest {
+  symbols: string[];
+  strategy_aliases: string[] | undefined;
+  strategy_definitions: Strategy[] | undefined
+  days_to_test_over: number;
 }

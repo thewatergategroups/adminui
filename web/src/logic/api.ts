@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Client, ClientCreateResponse, ClientRequest, Role, Scope, User, UserRequest, Parameter, ParameterRequest,Domain,DomainRequest, BacktestResult, BacktestDataItem } from "./types";
+import { Client, ClientCreateResponse, ClientRequest, Role, Scope, User, UserRequest, Parameter, ParameterRequest,Domain,DomainRequest, BacktestResult, BacktestDataItem, BacktestRequest } from "./types";
 
 export const IDENTITY_URL = "https://auth.thewatergategroups.com";
 
@@ -325,6 +325,18 @@ export async function handleGetBacktestResultsData(id: number): Promise<Backtest
         return resp.data;
     } catch (error) {
         console.error("Logout failed:", error);
+        return null;
+    }
+}
+
+export async function handleCreateBacktest(backtest: BacktestRequest): Promise<number | null> {
+    try {
+        const res = await axios.post(`${LLAMA_TRADING_URL}/backtest/start`, backtest, { withCredentials: true,headers: {
+            'Content-Type': 'application/json',
+        } });
+        return res.data["id_"];
+    } catch (error) {
+        console.error("Error creating backtest:", error);
         return null;
     }
 }

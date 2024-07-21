@@ -6,7 +6,7 @@ import { BacktestDataItem, BacktestResult } from '../../logic/types';
 import { useState } from 'react';
 import Modal from '../shared/Modal';
 import { startOfHour, parseISO, format } from 'date-fns';
-
+import CreateBacktest from './CreateBacktest';
 interface LegendItem {
     color: string;
     label: string;
@@ -157,6 +157,9 @@ const BacktestResults: React.FC = () => {
 
   return (
     <div>
+        {/* <div className="table-controls">
+            <CreateBacktest />
+        </div> */}
       {displayData.map((result) => (
         <Card key={result.id} style={{ marginBottom: '20px' }}>
           <h3>
