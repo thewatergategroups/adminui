@@ -59,6 +59,16 @@ export default function Navbar({ onLogout }: NavbarProps) {
         },
     ];
 
+
+    const tradingChildren = [
+        {
+            href: "/backtests",
+            label: "Backtests",
+            icon: <IconBadges size="1rem" stroke={1.5} />,
+            active: isActiveTab("/backtests"),
+        }
+    ];
+
     const navItems = [
         { href: "/", label: "Dashboard", icon: <IconLayoutDashboard size="1rem" stroke={1.5} />, active: isActiveTab("/") },
         {
@@ -70,7 +80,7 @@ export default function Navbar({ onLogout }: NavbarProps) {
         {
             label: "Secrets",
             icon: <IconUsers size="1rem" stroke={1.5} />,
-            active: isActiveTab("/secrets") || isActiveTab("/users/"),
+            active: isActiveTab("/secrets"),
             children: [
                 {
                     href: "/secrets",
@@ -83,7 +93,7 @@ export default function Navbar({ onLogout }: NavbarProps) {
         {
             label: "Domains",
             icon: <IconUsers size="1rem" stroke={1.5} />,
-            active: isActiveTab("/domains") || isActiveTab("/users/"),
+            active: isActiveTab("/domains"),
             children: [
                 {
                     href: "/domains",
@@ -92,6 +102,12 @@ export default function Navbar({ onLogout }: NavbarProps) {
                     active: isActiveTab("/domains"),
                 }
             ],
+        },
+        {
+            label: "Trading",
+            icon: <IconBadges size="1rem" stroke={1.5} />,
+            active: tradingChildren.some((child) => isActiveTab(child.href)),
+            children: tradingChildren,
         }
         // { href: "/settings", label: "Settings", icon: <IconSettings size="1rem" stroke={1.5} />, active: isActiveTab("/settings") },
     ] as NavItem[];

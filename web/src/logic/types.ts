@@ -86,3 +86,74 @@ export interface Role {
 export interface Scope {
     id_: string;
 }
+
+
+// trading 
+
+// types.ts
+
+export interface Position {
+    qty: string;
+    usd: number | null;
+    side: string;
+    symbol: string;
+    asset_id: string;
+    exchange: string;
+    swap_rate: number | null;
+    cost_basis: string;
+    asset_class: string;
+    change_today: string;
+    market_value: string;
+    current_price: string;
+    lastday_price: string;
+    qty_available: string;
+    unrealized_pl: string;
+    avg_entry_price: string;
+    unrealized_plpc: string;
+    asset_marginable: boolean;
+    avg_entry_swap_rate: number | null;
+    unrealized_intraday_pl: string;
+    unrealized_intraday_plpc: string;
+  }
+  
+  export interface VWAPResult {
+    buys: number;
+    sells: number;
+    equity: number;
+    positions: {
+      positions_held: {
+        [key: string]: Position;
+      };
+    };
+    buying_power: number;
+    total_positions_held: number;
+    starting_buying_power: number;
+  }
+  
+  export interface StrategyCondition {
+    name: string;
+    type: string;
+    active: boolean;
+    variables: {
+      [key: string]: number;
+    };
+  }
+  
+  export interface Strategy {
+    name: string;
+    alias: string;
+    active: boolean;
+    conditions: StrategyCondition[];
+  }
+  
+  export interface BacktestResult {
+    id: number;
+    symbols: string[];
+    result: {
+      vwap?: VWAPResult;
+    };
+    status: string;
+    timestamp: string;
+    strategies: Strategy[] | null;
+  }
+  

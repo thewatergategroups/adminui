@@ -13,7 +13,8 @@ import Users from "./components/permissions/Users";
 import {  handleCheckLoggedIn, handleLogout, IDENTITY_URL } from "./logic/api";
 import Parameters from "./components/secrets/Parameters";
 import Domains from "./components/domains/Domains";
-
+import BacktestResults from "./components/trading/BacktestResults";
+import Toes from "./components/trading/Toes";
 const REDIRECT_URI = `${window.location.origin}`;
 
 function App() {
@@ -63,6 +64,8 @@ function App() {
                     <Route path="clients" element={<Clients />} />
                     <Route path="roles" element={<Roles />} />
                     <Route path="scopes" element={<Scopes />} />
+                    <Route path="backtests" element={<BacktestResults />} />
+                    <Route path="toes" element={<Toes />} />
                 </Route>
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
