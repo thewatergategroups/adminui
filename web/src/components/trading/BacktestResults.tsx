@@ -157,9 +157,9 @@ const BacktestResults: React.FC = () => {
 
   return (
     <div>
-        {/* <div className="table-controls">
+        <div className="table-controls">
             <CreateBacktest />
-        </div> */}
+        </div>
       {displayData.map((result) => (
         <Card key={result.id} style={{ marginBottom: '20px' }}>
           <h3>
@@ -221,7 +221,7 @@ const BacktestResults: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {strategy.conditions.map((condition, idx) => (
+                    {strategy.conditions && strategy.conditions.map((condition, idx) => (
                     <tr key={idx}>
                         <td><strong>{condition.name}</strong></td>
                         <td>{condition.type}</td>

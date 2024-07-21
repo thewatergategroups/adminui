@@ -1,4 +1,4 @@
-import { ActionIcon, Button, JsonInput, MultiSelect, TextInput } from "@mantine/core";
+import { ActionIcon, Button, JsonInput, MultiSelect, TagsInput, TextInput } from "@mantine/core";
 import { IconUserPlus } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -38,8 +38,7 @@ export default function CreateBacktest() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (Object.values(backtest).some((value) => !value)) setHasAttempted(true);
-        else createBacktest(backtest as BacktestRequest);
+        createBacktest(backtest as BacktestRequest);
         setIsDrawerOpen(false);
     };
 
@@ -50,7 +49,7 @@ export default function CreateBacktest() {
             </ActionIcon>
             <Drawer opened={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} title="Create Backtest">
                 <form onSubmit={handleSubmit}>
-                    <MultiSelect
+                    <TagsInput
                         required
                         label="Symbols"
                         name="symbols"
@@ -67,11 +66,11 @@ export default function CreateBacktest() {
                         error={hasAttempted && !backtest.days_to_test_over}
                         type="number"
                     />
-                    <TextInput
+                    <TagsInput
                         label="Strategy Aliases"
                         name="strategy_aliases"
                         value={backtest.strategy_aliases}
-                        onChange={(e) => handleChange("strategy_aliases", e.target.value)}
+                        onChange={(e) => handleChange("strategy_aliases", e)}
                         error={hasAttempted && !backtest.strategy_aliases}
                     />
                     {/* <JsonInput
