@@ -1,15 +1,72 @@
-import { Table, Badge, Paper, Card } from '@mantine/core';
-import { useQuery } from '@tanstack/react-query';
+import { Table, Badge, Card, Button } from '@mantine/core';
+import { AreaChart } from '@mantine/charts'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { handleGetBacktestResults } from '../../logic/api';
-import { BacktestResult } from '../../logic/types';
+import { BacktestDataItem, BacktestResult } from '../../logic/types';
+import { useState } from 'react';
+import Modal from '../shared/Modal';
+import { handleGetBacktestResultsData } from '../../logic/api';
+import { startOfHour, parseISO,format } from 'date-fns';
 
+interface AggregatedData {
+    [key: string]: {
+      timestamp: string;
+      buying_power: number;
+      count: number;
+    };
+  }
 
-const Toes: React.FC = () => {
-    
+  
+const BacktestResults: React.FC = () => {
+    const queryClient = useQueryClient()
     const { data = [] } = useQuery({
         queryFn: handleGetBacktestResults,queryKey:['backtests']
     });
     const displayData = data as BacktestResult[];
+    const [modalOpened, setModalOpened] = useState(false);
+    const [chartData, setChartData] = useState<{ timestamp: string; buying_power: number }[]>([]);
+  
+
+    const fetchChartDataWithCache = async (id: number) => {
+        const cachedData = queryClient.getQueryData<BacktestDataItem[]>(['chartData', id]);
+        if (cachedData) {
+          return cachedData;
+        } else {
+          const response = await handleGetBacktestResultsData(id);
+          return response;
+        }
+      };
+
+    const { mutate: getChartData, isPending: isFetchingChartData } = useMutation({
+        mutationFn: (id: number) => fetchChartDataWithCache(id),
+        onSuccess: (data: BacktestDataItem[] | null,variables) => {
+            // Aggregate data to hourly intervals
+            if (data === null) {
+                setChartData([])
+                return
+            }
+            const aggregatedData = data.reduce((acc: AggregatedData, item) => {
+              const hour = startOfHour(parseISO(item.timestamp)).toISOString();
+              if (!acc[hour]) {
+                acc[hour] = { timestamp: hour, buying_power: 0, count: 0 };
+              }
+              acc[hour].buying_power += item.buying_power;
+              acc[hour].count += 1;
+              return acc;
+            }, {} as AggregatedData);
+      
+            const transformedData = Object.values(aggregatedData).map((item) => ({
+              timestamp: format(parseISO(item.timestamp), 'yyyy-MM-dd HH:mm'),
+              buying_power: item.buying_power / item.count, // Average buying power for the hour
+            }));
+      
+            setChartData(transformedData);
+            setModalOpened(true);
+            queryClient.setQueryData(['chartData', variables], transformedData);  
+        },
+        }
+      );
+    
     return (
         <div>
         {displayData.map((result) => (
@@ -69,10 +126,49 @@ const Toes: React.FC = () => {
                 ))}
                 </div>
             )}
+             <Button onClick={() => getChartData(result.id)} disabled={isFetchingChartData}>
+            Fetch Chart Data
+          </Button>
             </Card>
         ))}
+    <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title="Backtest Results"
+        size="100%"
+      >
+        {chartData.length ? (
+            <AreaChart
+              h={700}
+              data={chartData}
+              dataKey="timestamp"
+              series={[
+                {name: 'buying_power',label: "Buying Power", color: 'indigo.9'}
+              ]}
+              curveType="linear"
+              xAxisLabel='Time'
+              yAxisLabel='$ (Dollars)'
+              yAxisProps={{ tickMargin: 15, domain: ['auto', 'dataMax + 10'], orientation: 'left' }}
+              xAxisProps={{ tickFormatter: (timestamp, index) => {
+                // Show label for every nth data point (e.g., every 5th point)
+                const showLabel = 5;
+                return index % showLabel === 0 ? format(parseISO(timestamp), 'MM-dd HH') : '';
+              }, orientation: 'bottom' }}
+              connectNulls
+              withLegend
+              legendProps={{
+                align: 'left',
+                verticalAlign: 'bottom',
+                layout: 'horizontal',
+                wrapperStyle: { paddingLeft: '20px' }
+              }}
+            />
+        ) : (
+          <div>Loading...</div>
+        )}
+      </Modal>
         </div>
     );
     };
 
-export default Toes;
+export default BacktestResults;

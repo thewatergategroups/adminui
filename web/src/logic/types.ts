@@ -156,4 +156,41 @@ export interface Position {
     timestamp: string;
     strategies: Strategy[] | null;
   }
-  
+
+
+export interface Position {
+  qty: string;
+  usd: number | null;
+  side: string;
+  symbol: string;
+  asset_id: string;
+  exchange: string;
+  swap_rate: number | null;
+  cost_basis: string;
+  asset_class: string;
+  change_today: string;
+  market_value: string;
+  current_price: string;
+  lastday_price: string;
+  qty_available: string;
+  unrealized_pl: string;
+  avg_entry_price: string;
+  unrealized_plpc: string;
+  asset_marginable: boolean;
+  avg_entry_swap_rate: number | null;
+  unrealized_intraday_pl: string;
+  unrealized_intraday_plpc: string;
+}
+
+export interface BacktestDataItem {
+  id: number;
+  backtest_id: number;
+  positions: { [key: string]: Position };
+  orders: any[];
+  buying_power: number;
+  equity: number;
+  starting_buying_power: number;
+  buys: number;
+  sells: number;
+  timestamp: string;
+}

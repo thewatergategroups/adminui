@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Client, ClientCreateResponse, ClientRequest, Role, Scope, User, UserRequest, Parameter, ParameterRequest,Domain,DomainRequest, BacktestResult } from "./types";
+import { Client, ClientCreateResponse, ClientRequest, Role, Scope, User, UserRequest, Parameter, ParameterRequest,Domain,DomainRequest, BacktestResult, BacktestDataItem } from "./types";
 
 export const IDENTITY_URL = "https://auth.thewatergategroups.com";
 
@@ -306,6 +306,19 @@ export const LLAMA_TRADING_URL = "https://trading.thewatergategroups.com"
 export async function handleGetBacktestResults(): Promise<BacktestResult[] | null> {
     try {
         const resp = await axios.get(`${LLAMA_TRADING_URL}/backtest/results`);
+        if (resp.status !== 200) {
+            return null;
+        }
+        return resp.data;
+    } catch (error) {
+        console.error("Logout failed:", error);
+        return null;
+    }
+}
+
+export async function handleGetBacktestResultsData(id: number): Promise<BacktestDataItem[] | null> {
+    try {
+        const resp = await axios.get(`${LLAMA_TRADING_URL}/backtest/result/stats?backtest_id=${id}`);
         if (resp.status !== 200) {
             return null;
         }
